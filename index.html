@@ -552,28 +552,37 @@
         function setupSnapshots() {
             if (!isOnline || !userId) return;
             
+            // Ouvinte em tempo real para os Alimentos Consumidos
             onSnapshot(query(getFoodRef()), (snapshot) => {
                 allConsumedItems = [];
-                snapshot.forEach((doc) => allConsumedItems.push({ id: doc.id, ...doc.data() }));
+                snapshot.forEach((doc) => {
+                    allConsumedItems.push({ id: doc.id, ...doc.data() });
+                });
                 allConsumedItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderTodayList();
                 renderCalendar();
-            }, (err) => console.error(err));
+            }, (err) => console.error("Erro ao sincronizar alimentos:", err));
 
+            // Ouvinte em tempo real para Pesos
             onSnapshot(query(getWeightRef()), (snapshot) => {
                 allWeightItems = [];
-                snapshot.forEach((doc) => allWeightItems.push({ id: doc.id, ...doc.data() }));
+                snapshot.forEach((doc) => {
+                    allWeightItems.push({ id: doc.id, ...doc.data() });
+                });
                 allWeightItems.sort((a, b) => new Date(b.date) - new Date(a.date));
                 renderWeightList();
-            }, (err) => console.error(err));
+            }, (err) => console.error("Erro ao sincronizar pesos:", err));
 
+            // Ouvinte em tempo real para Atividades
             onSnapshot(query(getActivityRef()), (snapshot) => {
                 allActivityItems = [];
-                snapshot.forEach((doc) => allActivityItems.push({ id: doc.id, ...doc.data() }));
+                snapshot.forEach((doc) => {
+                    allActivityItems.push({ id: doc.id, ...doc.data() });
+                });
                 allActivityItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderActivityList();
                 renderTodayList();
-            }, (err) => console.error(err));
+            }, (err) => console.error("Erro ao sincronizar atividades:", err));
         }
 
         async function loadGoalFromDB() {
