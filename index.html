@@ -62,15 +62,15 @@
                     <p class="text-xs text-slate-500 font-semibold mt-0.5" id="current-date">Carregando...</p>
                 </div>
             </div>
-            <div id="auth-status-icon" class="bg-slate-100 p-2.5 rounded-full text-slate-400 transition-colors shadow-sm" title="Sincronizado com a nuvem">
-                <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <div id="auth-status-icon" class="bg-orange-50 p-2.5 rounded-full text-[#FC4C02] transition-colors shadow-sm" title="Conectado ao Firebase Firestore">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
             </div>
         </header>
 
-        <!-- MAIN CONTENT AREA WITH VIEWS -->
+        <!-- MAIN VIEWS -->
         <main class="flex-1 overflow-y-auto no-scrollbar p-5 space-y-6 bg-slate-50/50">
             
-            <!-- VIEW 1: HOJE (DASHBOARD & FOOD LOG) -->
+            <!-- VIEW: TODAY -->
             <div id="view-today" class="space-y-6 animate-fade-in">
                 <!-- DASHBOARD CARD -->
                 <div id="dashboard-card" class="bg-gradient-to-br from-[#121214] via-[#1a1a1e] to-[#2b2b30] rounded-[2.5rem] p-6 text-white shadow-xl strava-glow relative overflow-hidden transition-all duration-500">
@@ -83,7 +83,7 @@
                             <span class="text-orange-400 text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
                                 <span class="w-2 h-2 rounded-full bg-[#FC4C02] animate-ping"></span> Balanço de Hoje
                             </span>
-                            <button id="btn-edit-goal" class="text-xs bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-white px-3.5 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-md border border-white/20 shadow-sm font-bold">
+                            <button id="btn-edit-goal" class="text-xs bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-white px-3.5 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-md border border-white/20 shadow-sm font-bold cursor-pointer">
                                 Meta: <span id="goal-display" class="text-orange-400">2000</span>
                                 <svg class="w-3 h-3 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             </button>
@@ -106,7 +106,6 @@
                             </div>
                         </div>
                         
-                        <!-- PROGRESS BAR -->
                         <div class="mt-4 bg-black/20 p-3 rounded-2xl border border-white/5">
                             <div class="flex justify-between text-xs text-slate-300 font-bold mb-2">
                                 <span id="progress-percent" class="text-orange-400">0% da meta</span>
@@ -121,24 +120,31 @@
                     </div>
                 </div>
 
-                <!-- ADD FOOD SECTION -->
+                <!-- SELECTOR TABS -->
                 <div class="bg-white rounded-[2.5rem] p-4 shadow-sm border border-slate-100">
                     <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-4">
-                        <button id="tab-quick" class="flex-1 text-sm font-bold py-3 rounded-xl transition-all bg-white text-[#FC4C02] shadow-md">Seleção Rápida</button>
-                        <button id="tab-manual" class="flex-1 text-sm font-bold py-3 rounded-xl transition-all text-slate-500 hover:text-slate-700">Adição Manual</button>
+                        <button id="tab-quick" class="flex-1 text-sm font-bold py-3 rounded-xl transition-all bg-white text-[#FC4C02] shadow-md cursor-pointer">Seleção Rápida</button>
+                        <button id="tab-manual" class="flex-1 text-sm font-bold py-3 rounded-xl transition-all text-slate-500 hover:text-slate-700 cursor-pointer">Adição Manual</button>
                     </div>
 
                     <div class="p-1">
-                        <!-- Quick Selection -->
-                        <div id="view-quick" class="animate-fade-in">
-                            <p class="text-xs text-slate-400 mb-3 font-extrabold text-center uppercase tracking-widest">Toque no alimento para adicionar</p>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-80 overflow-y-auto pr-1" id="predefined-foods-container">
-                                <!-- Populated by JS -->
+                        <!-- QUICK FOODS GRID -->
+                        <div id="view-quick" class="animate-fade-in space-y-3">
+                            <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="food-categories">
+                                <button onclick="filterCategory('all')" class="cat-btn px-4 py-2 rounded-xl text-xs font-black bg-[#FC4C02] text-white whitespace-nowrap shadow-sm transition-all cursor-pointer">Todos</button>
+                                <button onclick="filterCategory('protein')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap hover:bg-slate-200 transition-all cursor-pointer">Proteínas (10)</button>
+                                <button onclick="filterCategory('carb')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap hover:bg-slate-200 transition-all cursor-pointer">Carboidratos (10)</button>
+                                <button onclick="filterCategory('fruit')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap hover:bg-slate-200 transition-all cursor-pointer">Frutas (10)</button>
+                                <button onclick="filterCategory('others')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap hover:bg-slate-200 transition-all cursor-pointer">Pães & Cia</button>
+                            </div>
+                            <p class="text-[11px] text-slate-400 font-extrabold text-center uppercase tracking-widest pt-1">Toque no alimento para adicionar</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-80 overflow-y-auto pr-1 pb-4" id="predefined-foods-container">
+                                <!-- Preenchido via JS -->
                             </div>
                         </div>
 
-                        <!-- Manual Addition -->
-                        <div id="view-manual" class="hidden animate-fade-in space-y-4">
+                        <!-- MANUAL TAB -->
+                        <div id="view-manual" class="hidden animate-fade-in space-y-4 pb-4">
                             <div class="space-y-1.5">
                                 <label class="text-xs font-black text-slate-600 ml-1 uppercase">O que você comeu?</label>
                                 <input type="text" id="manual-name" placeholder="Ex: Tapioca com frango" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 focus:border-[#FC4C02] transition-all text-sm font-medium">
@@ -147,7 +153,7 @@
                                 <label class="text-xs font-black text-slate-600 ml-1 uppercase">Quantas calorias?</label>
                                 <input type="number" id="manual-calories" placeholder="Ex: 350" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 focus:border-[#FC4C02] transition-all text-sm font-medium">
                             </div>
-                            <button id="btn-add-manual" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 mt-2">
+                            <button id="btn-add-manual" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 mt-2 cursor-pointer">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                                 Adicionar Calorias
                             </button>
@@ -155,11 +161,11 @@
                     </div>
                 </div>
 
-                <!-- TODAY'S HISTORY LIST -->
+                <!-- CONSUMPTION HISTORY -->
                 <div class="pt-2 pb-6">
                     <div class="flex justify-between items-end mb-4 px-1">
                         <h3 class="font-black text-slate-900 text-lg tracking-tight">Histórico de Hoje</h3>
-                        <button id="btn-clear-all" class="text-xs text-rose-600 hover:text-rose-700 font-bold bg-rose-50 px-3.5 py-1.5 rounded-full transition-colors hidden shadow-sm">Limpar Dia</button>
+                        <button id="btn-clear-all" class="text-xs text-rose-600 hover:text-rose-700 font-bold bg-rose-50 px-3.5 py-1.5 rounded-full transition-colors hidden shadow-sm cursor-pointer">Limpar Dia</button>
                     </div>
                     
                     <div id="empty-state" class="text-center py-12 bg-white rounded-[2.5rem] border border-dashed border-slate-200 shadow-sm">
@@ -170,15 +176,12 @@
                         <p class="text-xs text-slate-400 mt-1 font-medium">Selecione acima ou adicione manualmente.</p>
                     </div>
 
-                    <ul id="consumption-list" class="space-y-3">
-                        <!-- Populated by JS -->
-                    </ul>
+                    <ul id="consumption-list" class="space-y-3"></ul>
                 </div>
             </div>
 
-            <!-- VIEW 2: ATIVIDADES FÍSICAS -->
+            <!-- VIEW: ACTIVITIES -->
             <div id="view-activities" class="hidden space-y-6 animate-fade-in">
-                <!-- EXERCISE SUMMARY CARD -->
                 <div class="bg-gradient-to-br from-[#121214] via-[#1a1a1e] to-[#2b2b30] rounded-[2.5rem] p-6 text-white shadow-xl strava-glow relative overflow-hidden">
                     <div class="relative z-10">
                         <span class="text-orange-400 text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
@@ -192,15 +195,12 @@
                     </div>
                 </div>
 
-                <!-- ADD ACTIVITY SECTION -->
                 <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 space-y-4">
                     <h3 class="font-black text-slate-900 text-base">Registrar Atividade Física</h3>
                     
                     <div class="space-y-1.5">
                         <label class="text-xs font-black text-slate-600 ml-1 uppercase">Selecione o Exercício</label>
-                        <select id="activity-select" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-sm font-medium">
-                            <!-- Populated by JS -->
-                        </select>
+                        <select id="activity-select" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-sm font-medium"></select>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -214,33 +214,30 @@
                         </div>
                     </div>
 
-                    <button id="btn-add-activity" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30">
+                    <button id="btn-add-activity" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Adicionar Atividade
                     </button>
                 </div>
 
-                <!-- TODAY'S ACTIVITIES LIST -->
                 <div class="space-y-3 pb-6">
                     <h3 class="font-black text-slate-900 text-lg tracking-tight px-1">Atividades de Hoje</h3>
                     <div id="activity-empty-state" class="text-center py-10 bg-white rounded-[2.5rem] border border-dashed border-slate-200 shadow-sm text-slate-400 text-xs font-medium">
                         Nenhuma atividade registrada hoje.
                     </div>
-                    <ul id="activity-list" class="space-y-3">
-                        <!-- Populated by JS -->
-                    </ul>
+                    <ul id="activity-list" class="space-y-3"></ul>
                 </div>
             </div>
 
-            <!-- VIEW 3: CALENDÁRIO / HISTÓRICO MENSAL -->
-            <div id="view-calendar" class="hidden space-y-6 animate-fade-in">
+            <!-- VIEW: CALENDAR -->
+            <div id="view-calendar" class="hidden space-y-6 animate-fade-in pb-8">
                 <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100">
                     <div class="flex justify-between items-center mb-6">
-                        <button id="cal-prev-month" class="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all font-bold">
+                        <button id="cal-prev-month" class="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all font-bold cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
                         </button>
                         <h2 id="cal-month-title" class="text-lg font-black text-slate-900 capitalize">Mês Ano</h2>
-                        <button id="cal-next-month" class="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all font-bold">
+                        <button id="cal-next-month" class="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all font-bold cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                         </button>
                     </div>
@@ -255,9 +252,7 @@
                         <span class="text-[11px] font-black text-slate-400 uppercase">Sáb</span>
                     </div>
 
-                    <div id="calendar-grid" class="grid grid-cols-7 gap-1.5">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-1.5"></div>
 
                     <div class="flex justify-center items-center gap-6 mt-6 pt-4 border-t border-slate-100 text-xs font-semibold text-slate-500">
                         <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Meta Atingida</div>
@@ -265,20 +260,17 @@
                     </div>
                 </div>
 
-                <!-- SELECTED DAY DETAILS -->
                 <div id="selected-day-container" class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 hidden animate-fade-in">
                     <div class="flex justify-between items-center mb-4">
                         <h3 id="selected-day-title" class="font-black text-slate-900 text-base">Detalhes do Dia</h3>
                         <span id="selected-day-total" class="font-black text-[#FC4C02] text-sm bg-orange-50 px-3 py-1 rounded-full">0 kcal</span>
                     </div>
-                    <ul id="selected-day-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
-                        <!-- Populated by JS -->
-                    </ul>
+                    <ul id="selected-day-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></ul>
                 </div>
             </div>
 
-            <!-- VIEW 4: PESO & EVOLUÇÃO -->
-            <div id="view-weight" class="hidden space-y-6 animate-fade-in">
+            <!-- VIEW: WEIGHT -->
+            <div id="view-weight" class="hidden space-y-6 animate-fade-in pb-8">
                 <div class="bg-gradient-to-br from-[#121214] via-[#1a1a1e] to-[#2b2b30] rounded-[2.5rem] p-6 text-white shadow-xl strava-glow relative overflow-hidden">
                     <div class="relative z-10">
                         <span class="text-orange-400 text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
@@ -304,7 +296,7 @@
                             <input type="date" id="weight-date-input" class="w-full px-3 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-xs font-medium">
                         </div>
                     </div>
-                    <button id="btn-save-weight" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30">
+                    <button id="btn-save-weight" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                         Salvar Peso
                     </button>
@@ -313,37 +305,34 @@
                 <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100">
                     <h3 class="font-black text-slate-900 text-base mb-4">Histórico de Peso</h3>
                     <div id="weight-empty-state" class="text-center py-8 text-slate-400 text-xs font-semibold">
-                        Nenhum registro de peso encontrado.
+                        Nenhum registro encontrado.
                     </div>
-                    <ul id="weight-history-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
-                        <!-- Populated by JS -->
-                    </ul>
+                    <ul id="weight-history-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></ul>
                 </div>
             </div>
-
         </main>
 
-        <!-- BOTTOM NAVIGATION BAR -->
+        <!-- NAVIGATION BAR -->
         <nav class="bg-white/95 backdrop-blur-md border-t border-slate-100 py-3 px-6 fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto flex justify-around items-center shadow-2xl">
-            <button id="nav-today" class="flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group">
+            <button id="nav-today" class="flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group cursor-pointer">
                 <div class="p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 </div>
                 <span>Hoje</span>
             </button>
-            <button id="nav-activities" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group">
+            <button id="nav-activities" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group cursor-pointer">
                 <div class="p-1.5 rounded-xl group-hover:bg-slate-100 group-hover:scale-110 transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
                 <span>Atividades</span>
             </button>
-            <button id="nav-calendar" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group">
+            <button id="nav-calendar" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group cursor-pointer">
                 <div class="p-1.5 rounded-xl group-hover:bg-slate-100 group-hover:scale-110 transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
                 <span>Calendário</span>
             </button>
-            <button id="nav-weight" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group">
+            <button id="nav-weight" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group cursor-pointer">
                 <div class="p-1.5 rounded-xl group-hover:bg-slate-100 group-hover:scale-110 transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
                 </div>
@@ -352,7 +341,7 @@
         </nav>
     </div>
 
-    <!-- MODAL DE QUANTIDADE -->
+    <!-- MODAL: QUANTITY -->
     <div id="quantity-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center px-4 backdrop-blur-sm transition-opacity opacity-0">
         <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-6 shadow-2xl transform scale-95 transition-transform duration-300" id="q-modal-content">
             <div class="text-center mb-6">
@@ -360,57 +349,51 @@
                 <h3 class="text-xl font-black text-slate-900" id="q-modal-title">Alimento</h3>
                 <p class="text-slate-500 text-xs font-semibold mt-1" id="q-modal-desc"></p>
             </div>
-            
             <div class="mb-6 space-y-2">
                 <label class="block text-xs font-black text-slate-600 ml-1 uppercase tracking-wider" id="q-modal-label">Quantidade</label>
                 <div class="flex items-center gap-3">
                     <input type="number" id="q-modal-input" min="1" inputmode="numeric" class="w-full px-4 py-4 text-xl font-black text-center bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 transition-all">
                     <span id="q-modal-unit" class="text-slate-700 font-black w-16 text-center bg-slate-100 py-4 rounded-2xl text-sm">g</span>
                 </div>
-                
                 <div class="mt-4 flex justify-between items-center bg-orange-50/70 p-4 rounded-2xl border border-orange-100">
                     <span class="text-xs text-orange-800 font-bold uppercase tracking-wider">Total Calculado:</span>
                     <span class="text-xl font-black text-[#FC4C02]" id="q-modal-total-cals">0 kcal</span>
                 </div>
             </div>
-
             <div class="flex gap-3">
-                <button id="q-modal-btn-cancel" class="flex-1 py-4 rounded-2xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all">Cancelar</button>
-                <button id="q-modal-btn-confirm" class="flex-1 py-4 rounded-2xl text-sm font-black text-white bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 shadow-lg shadow-orange-500/30 transition-all">Adicionar</button>
+                <button id="q-modal-btn-cancel" class="flex-1 py-4 rounded-2xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all cursor-pointer">Cancelar</button>
+                <button id="q-modal-btn-confirm" class="flex-1 py-4 rounded-2xl text-sm font-black text-white bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 shadow-lg shadow-orange-500/30 transition-all cursor-pointer">Adicionar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE META -->
+    <!-- MODAL: GOAL -->
     <div id="goal-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center px-4 backdrop-blur-sm transition-opacity opacity-0">
         <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-6 shadow-2xl transform scale-95 transition-transform duration-300" id="goal-modal-content">
             <h3 class="text-xl font-black text-slate-900 mb-1">Sua Meta Diária</h3>
             <p class="text-slate-500 text-xs font-semibold mb-5">Quantas calorias você deseja consumir por dia?</p>
-            
             <div class="mb-6 space-y-2">
                 <label class="block text-xs font-black text-slate-600 ml-1 uppercase tracking-wider">Calorias (kcal)</label>
                 <input type="number" id="goal-modal-input" min="500" max="10000" inputmode="numeric" class="w-full px-4 py-4 text-xl font-black text-center bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 transition-all">
             </div>
-
             <div class="flex gap-3">
-                <button id="goal-btn-cancel" class="flex-1 py-4 rounded-2xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all">Cancelar</button>
-                <button id="goal-btn-confirm" class="flex-1 py-4 rounded-2xl text-sm font-black text-white bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 shadow-lg shadow-orange-500/30 transition-all">Salvar Meta</button>
+                <button id="goal-btn-cancel" class="flex-1 py-4 rounded-2xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all cursor-pointer">Cancelar</button>
+                <button id="goal-btn-confirm" class="flex-1 py-4 rounded-2xl text-sm font-black text-white bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 shadow-lg shadow-orange-500/30 transition-all cursor-pointer">Salvar Meta</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE AVISO -->
+    <!-- MODAL: ALERT -->
     <div id="alert-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center px-4 backdrop-blur-sm transition-opacity opacity-0">
         <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-6 shadow-2xl transform scale-95 transition-transform duration-300" id="alert-modal-content">
-            <div class="w-14 h-14 bg-red-100 rounded-3xl flex items-center justify-center mb-4 text-red-500 mx-auto shadow-sm">
+            <div class="w-14 h-14 bg-red-100 rounded-3xl flex items-center justify-center mb-4 text-red-500 mx-auto shadow-sm" id="alert-icon-container">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
             <h3 class="text-lg font-black text-slate-900 mb-1 text-center" id="alert-title">Aviso</h3>
             <p class="text-slate-500 text-xs font-semibold mb-6 text-center" id="alert-message">Mensagem aqui</p>
-            
             <div class="flex gap-3" id="alert-actions">
-                <button id="alert-btn-cancel" class="flex-1 py-3.5 rounded-2xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all">Cancelar</button>
-                <button id="alert-btn-confirm" class="flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-red-500 hover:bg-red-600 active:scale-95 shadow-lg shadow-red-500/30 transition-all">Confirmar</button>
+                <button id="alert-btn-cancel" class="flex-1 py-3.5 rounded-2xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all cursor-pointer">Cancelar</button>
+                <button id="alert-btn-confirm" class="flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-red-500 hover:bg-red-600 active:scale-95 shadow-lg shadow-red-500/30 transition-all cursor-pointer">Confirmar</button>
             </div>
         </div>
     </div>
@@ -418,12 +401,11 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, getDocs, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'projetin-fitness-app';
         
-        // 👇 Configuração do Firebase
-        let firebaseConfig = {
+        const firebaseConfig = {
             apiKey: "AIzaSyDI6JBGwynq1ybkqhMxgD8xcxp4icU-1lQ",
             authDomain: "projetinfitness-1278c.firebaseapp.com",
             databaseURL: "https://projetinfitness-1278c-default-rtdb.firebaseio.com",
@@ -434,12 +416,6 @@
             measurementId: "G-VRQMYCJPRB"
         };
 
-        try {
-            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-                firebaseConfig = JSON.parse(__firebase_config);
-            }
-        } catch (e) { console.error("Erro config:", e); }
-
         let app, db, auth, userId;
         let isOnline = false;
         let allConsumedItems = []; 
@@ -447,70 +423,76 @@
         let allActivityItems = [];
         let dailyGoal = 2000; 
         let currentCalendarDate = new Date();
+        let currentCategoryFilter = 'all';
 
-        // Custom high-fidelity food icons (Strava theme styled)
+        // SVGs Detalhados
         const svgIcons = {
-            rice: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h10a4 4 0 004-4M5 11l2-5h10l2 5M6 15h12"/></svg>`,
-            beans: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`,
-            pasta: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M7 7h10M6 12h12M8 17h8"/></svg>`,
-            potato: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="6"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="13" r="1" fill="currentColor"/></svg>`,
-            fries: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l1-6h12l1 6M4 10h16v10a2 2 0 01-2 2H6a2 2 0 01-2-2V10z"/></svg>`,
-            oats: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-4-12l4-4 4 4m-8 8l4 4 4-4"/></svg>`,
-            tapioca: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6"/></svg>`,
-            popcorn: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8l2 12h12l2-12H4zM8 8V6a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>`,
-            meat: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-8 8c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm4 2l-6.41 6.41a2 2 0 01-2.82 0l-1.18-1.18a2 2 0 010-2.82L10 14"/></svg>`,
-            chicken: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4C6.5 4 4 7 4 11s3 8 7.5 8c2 0 4.5-1 6.5-3l1.5-2a2 2 0 00-1-3l-2-1a2 2 0 01-1-2c0-1.5-1.5-3-3.5-3z"/></svg>`,
-            fish: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12c4-4 10-6 16-6s5 2 4 6c1 4-2 6-4 6s-12-2-16-6zM15 10v4"/></svg>`,
-            cheese: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-16-9A2 2 0 002 0v16a2 2 0 002 2h15a2 2 0 002-2zM9 11h.01M13 14h.01M13 8h.01"/></svg>`,
-            salad: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v3m0 0a9 9 0 019 9h-18a9 9 0 019-9zM4 18h16"/></svg>`,
-            egg: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="13" rx="7" ry="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v3"/></svg>`,
-            bread: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M4 16c0-4 4-8 8-8s8 4 8 8M4 16h16"/></svg>`,
-            fruit: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 5V3m2 3.5C14.5 5 16 4 17 4"/></svg>`,
-            drink: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 2h10l-1 18H8L7 2zM6 7h12"/></svg>`,
-            sweet: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 6v12m8-12v12M4 12h16"/></svg>`,
-            pizza: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 22h20L12 2z"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="10" cy="16" r="1" fill="currentColor"/><circle cx="14" cy="14" r="1" fill="currentColor"/></svg>`,
-            burger: `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 11h16M5 15h14M7 7h10a3 3 0 013 3v1H4v-1a3 3 0 013-3z"/></svg>`
+            meat: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-8 8c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm4 2l-6.41 6.41a2 2 0 01-2.82 0l-1.18-1.18a2 2 0 010-2.82L10 14"/></svg>`,
+            chicken: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4C6.5 4 4 7 4 11s3 8 7.5 8c2 0 4.5-1 6.5-3l1.5-2a2 2 0 00-1-3l-2-1a2 2 0 01-1-2c0-1.5-1.5-3-3.5-3z"/></svg>`,
+            fish: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12c4-4 10-6 16-6s5 2 4 6c1 4-2 6-4 6s-12-2-16-6zM15 10v4"/></svg>`,
+            egg: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="13" rx="7" ry="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v3"/></svg>`,
+            cheese: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-16-9A2 2 0 002 0v16a2 2 0 002 2h15a2 2 0 002-2zM9 11h.01M13 14h.01M13 8h.01"/></svg>`,
+            rice: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 14a4 4 0 004 4h8a4 4 0 004-4M5 10l3-5h8l3 5M6 14h12"/></svg>`,
+            beans: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`,
+            pasta: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M7 7h10M6 12h12M8 17h8"/></svg>`,
+            potato: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="6"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="13" r="1" fill="currentColor"/></svg>`,
+            oats: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-4-12l4-4 4 4m-8 8l4 4 4-4"/></svg>`,
+            fruit: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 5V3m2 3.5C14.5 5 16 4 17 4"/></svg>`,
+            bread: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M4 16c0-4 4-8 8-8s8 4 8 8M4 16h16"/></svg>`,
+            butter: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 8V6a2 2 0 012-2h6a2 2 0 012 2v2"/></svg>`,
+            requeijao: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 8h12l-1 12H7L6 8zM9 4h6v4H9z"/></svg>`
         };
+
+        // LISTA ORGANIZADA EXATAMENTE COMO SOLICITADO
+        const predefinedFoods = [
+            // --- 10 PROTEÍNAS ---
+            { name: 'Peito de Frango', cals: 165, type: 'weight', category: 'protein', iconKey: 'chicken' },
+            { name: 'Carne Bovina Magra', cals: 210, type: 'weight', category: 'protein', iconKey: 'meat' },
+            { name: 'Patinho Moído', cals: 220, type: 'weight', category: 'protein', iconKey: 'meat' },
+            { name: 'Carne de Porco', cals: 242, type: 'weight', category: 'protein', iconKey: 'meat' },
+            { name: 'Filé de Tilápia / Peixe', cals: 128, type: 'weight', category: 'protein', iconKey: 'fish' },
+            { name: 'Ovos Cozidos / Fritos', cals: 75, type: 'unit', category: 'protein', iconKey: 'egg' },
+            { name: 'Atum em Lata', cals: 116, type: 'weight', category: 'protein', iconKey: 'fish' },
+            { name: 'Queijo Cottage', cals: 98, type: 'weight', category: 'protein', iconKey: 'cheese' },
+            { name: 'Queijo Mussarela', cals: 300, type: 'weight', category: 'protein', iconKey: 'cheese' },
+            { name: 'Iogurte Grego Proteico', cals: 90, type: 'weight', category: 'protein', iconKey: 'cheese' },
+
+            // --- 10 CARBOIDRATOS ---
+            { name: 'Arroz Branco', cals: 130, type: 'weight', category: 'carb', iconKey: 'rice' },
+            { name: 'Arroz Integral', cals: 124, type: 'weight', category: 'carb', iconKey: 'rice' },
+            { name: 'Feijão Carioca / Preto', cals: 90, type: 'weight', category: 'carb', iconKey: 'beans' },
+            { name: 'Macarrão', cals: 150, type: 'weight', category: 'carb', iconKey: 'pasta' },
+            { name: 'Batata Doce', cals: 86, type: 'weight', category: 'carb', iconKey: 'potato' },
+            { name: 'Batata Inglesa Cozida', cals: 87, type: 'weight', category: 'carb', iconKey: 'potato' },
+            { name: 'Mandioca / Aipim', cals: 125, type: 'weight', category: 'carb', iconKey: 'potato' },
+            { name: 'Aveia em Flocos', cals: 389, type: 'weight', category: 'carb', iconKey: 'oats' },
+            { name: 'Cuscuz de Milho', cals: 112, type: 'weight', category: 'carb', iconKey: 'rice' },
+            { name: 'Tapioca (Goma)', cals: 238, type: 'weight', category: 'carb', iconKey: 'rice' },
+
+            // --- 10 FRUTAS ---
+            { name: 'Banana Prata / Nanica', cals: 90, type: 'unit', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Maçã', cals: 72, type: 'unit', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Mamão Papaya (100g)', cals: 43, type: 'weight', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Melancia (100g)', cals: 30, type: 'weight', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Morango (100g)', cals: 32, type: 'weight', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Abacate (100g)', cals: 160, type: 'weight', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Laranja', cals: 62, type: 'unit', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Pêra', cals: 57, type: 'unit', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Uva (100g)', cals: 67, type: 'weight', category: 'fruit', iconKey: 'fruit' },
+            { name: 'Abacaxi (100g)', cals: 50, type: 'weight', category: 'fruit', iconKey: 'fruit' },
+
+            // --- PÃES, MANTEIGA E REQUEIJÃO ---
+            { name: 'Pão Francês', cals: 135, type: 'unit', category: 'others', iconKey: 'bread' },
+            { name: 'Pão Integral de Forma', cals: 65, type: 'unit', category: 'others', iconKey: 'bread' },
+            { name: 'Manteiga (1 colher)', cals: 75, type: 'weight', category: 'others', iconKey: 'butter' },
+            { name: 'Requeijão Cremoso (1 colher)', cals: 60, type: 'weight', category: 'others', iconKey: 'requeijao' }
+        ];
 
         const predefinedActivities = [
             { name: 'Caminhada', baseBurnPerMin: 4.5, kmBurn: 50, icon: '🚶' },
             { name: 'Corrida', baseBurnPerMin: 9.0, kmBurn: 70, icon: '🏃' },
-            { name: 'Ciclismo / Pedalada', baseBurnPerMin: 7.0, kmBurn: 35, icon: '🚴' },
-            { name: 'Musculação', baseBurnPerMin: 5.5, kmBurn: 0, icon: '🏋️' },
-            { name: 'Natação', baseBurnPerMin: 8.5, kmBurn: 0, icon: '🏊' },
-            { name: 'Futebol / Esportes', baseBurnPerMin: 8.0, kmBurn: 0, icon: '⚽' },
-            { name: 'Dança / Aeróbico', baseBurnPerMin: 6.5, kmBurn: 0, icon: '💃' },
-            { name: 'Pilates / Yoga', baseBurnPerMin: 3.5, kmBurn: 0, icon: '🧘' }
-        ];
-
-        const predefinedFoods = [
-            { name: 'Arroz Branco', cals: 130, type: 'weight', iconKey: 'rice' }, 
-            { name: 'Feijão', cals: 90, type: 'weight', iconKey: 'beans' }, 
-            { name: 'Macarrão', cals: 150, type: 'weight', iconKey: 'pasta' }, 
-            { name: 'Batata Doce', cals: 86, type: 'weight', iconKey: 'potato' },
-            { name: 'Batata Frita', cals: 312, type: 'weight', iconKey: 'fries' }, 
-            { name: 'Aveia', cals: 389, type: 'weight', iconKey: 'oats' },
-            { name: 'Tapioca', cals: 238, type: 'weight', iconKey: 'tapioca' },
-            { name: 'Pipoca', cals: 387, type: 'weight', iconKey: 'popcorn' },
-            { name: 'Carne de Boi', cals: 250, type: 'weight', iconKey: 'meat' },
-            { name: 'Peito de Frango', cals: 165, type: 'weight', iconKey: 'chicken' }, 
-            { name: 'Carne de Porco', cals: 242, type: 'weight', iconKey: 'meat' }, 
-            { name: 'Peixe Grelhado', cals: 128, type: 'weight', iconKey: 'fish' }, 
-            { name: 'Queijo', cals: 300, type: 'weight', iconKey: 'cheese' }, 
-            { name: 'Salada Mista', cals: 30, type: 'weight', iconKey: 'salad' }, 
-            { name: 'Ovo Frito', cals: 107, type: 'unit', iconKey: 'egg' },
-            { name: 'Ovo Cozido', cals: 75, type: 'unit', iconKey: 'egg' },
-            { name: 'Pão Francês', cals: 135, type: 'unit', iconKey: 'bread' },
-            { name: 'Banana', cals: 90, type: 'unit', iconKey: 'fruit' },
-            { name: 'Maçã', cals: 52, type: 'unit', iconKey: 'fruit' },
-            { name: 'Laranja', cals: 62, type: 'unit', iconKey: 'fruit' },
-            { name: 'Abacate', cals: 160, type: 'unit', iconKey: 'fruit' },
-            { name: 'Iogurte Natural', cals: 120, type: 'unit', iconKey: 'drink' },
-            { name: 'Refrigerante', cals: 140, type: 'unit', iconKey: 'drink' },
-            { name: 'Chocolate (barra)', cals: 530, type: 'unit', iconKey: 'sweet' },
-            { name: 'Açaí (tigela)', cals: 250, type: 'unit', iconKey: 'sweet' },
-            { name: 'Pizza (fatia)', cals: 270, type: 'unit', iconKey: 'pizza' },
-            { name: 'Hambúrguer', cals: 450, type: 'unit', iconKey: 'burger' }
+            { name: 'Ciclismo', baseBurnPerMin: 7.0, kmBurn: 35, icon: '🚴' },
+            { name: 'Musculação', baseBurnPerMin: 5.5, kmBurn: 0, icon: '🏋' }
         ];
 
         function getFormattedDate(d = new Date()) {
@@ -522,69 +504,82 @@
 
         async function initFirebase() {
             try {
-                if (!firebaseConfig.projectId) throw new Error("Sem config");
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
 
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    userId = auth.currentUser.uid;
+                } catch (authError) {
+                    userId = "user_" + Math.random().toString(36).substr(2, 9);
                 }
 
-                userId = auth.currentUser.uid;
-                isOnline = true;
+                const testRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'conexao');
+                await setDoc(testRef, { lastLogin: Date.now() }, { merge: true });
                 
-                const authIcon = document.getElementById('auth-status-icon');
-                authIcon.classList.replace('text-slate-400', 'text-[#FC4C02]');
-                authIcon.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>`;
-
+                isOnline = true;
+                updateOnlineStatus(true);
+                
                 await loadGoalFromDB();
                 setupSnapshots();
+
             } catch (error) {
-                console.error("Modo Offline Ativado:", error);
-                const authIcon = document.getElementById('auth-status-icon');
-                authIcon.classList.replace('text-slate-400', 'text-amber-500');
-                authIcon.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
+                isOnline = false;
+                updateOnlineStatus(false);
             }
         }
 
-        function getFoodCollectionRef() { return collection(db, 'artifacts', appId, 'users', userId, 'consumedFoods_v6'); }
-        function getWeightCollectionRef() { return collection(db, 'artifacts', appId, 'users', userId, 'weightHistory_v6'); }
-        function getActivityCollectionRef() { return collection(db, 'artifacts', appId, 'users', userId, 'activityHistory_v6'); }
+        function updateOnlineStatus(online) {
+            const authIcon = document.getElementById('auth-status-icon');
+            if (online) {
+                authIcon.className = "bg-orange-50 p-2.5 rounded-full text-[#FC4C02] transition-colors shadow-sm";
+                authIcon.title = "Online & Sincronizado com Firebase";
+            } else {
+                authIcon.className = "bg-amber-50 p-2.5 rounded-full text-amber-500 transition-colors shadow-sm";
+                authIcon.title = "Offline";
+            }
+        }
+
+        function getFoodRef() { return collection(db, 'artifacts', appId, 'users', userId, 'foods'); }
+        function getWeightRef() { return collection(db, 'artifacts', appId, 'users', userId, 'weights'); }
+        function getActivityRef() { return collection(db, 'artifacts', appId, 'users', userId, 'activities'); }
 
         function setupSnapshots() {
             if (!isOnline || !userId) return;
             
-            onSnapshot(query(getFoodCollectionRef()), (snapshot) => {
+            onSnapshot(query(getFoodRef()), (snapshot) => {
                 allConsumedItems = [];
                 snapshot.forEach((doc) => allConsumedItems.push({ id: doc.id, ...doc.data() }));
                 allConsumedItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderTodayList();
                 renderCalendar();
-            }, (error) => console.error(error));
+            }, (err) => console.error(err));
 
-            onSnapshot(query(getWeightCollectionRef()), (snapshot) => {
+            onSnapshot(query(getWeightRef()), (snapshot) => {
                 allWeightItems = [];
                 snapshot.forEach((doc) => allWeightItems.push({ id: doc.id, ...doc.data() }));
                 allWeightItems.sort((a, b) => new Date(b.date) - new Date(a.date));
                 renderWeightList();
-            }, (error) => console.error(error));
+            }, (err) => console.error(err));
 
-            onSnapshot(query(getActivityCollectionRef()), (snapshot) => {
+            onSnapshot(query(getActivityRef()), (snapshot) => {
                 allActivityItems = [];
                 snapshot.forEach((doc) => allActivityItems.push({ id: doc.id, ...doc.data() }));
                 allActivityItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderActivityList();
                 renderTodayList();
-            }, (error) => console.error(error));
+            }, (err) => console.error(err));
         }
 
         async function loadGoalFromDB() {
             if (!isOnline || !userId) return;
             try {
-                const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile_v6');
+                const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists() && docSnap.data().dailyGoal) {
                     dailyGoal = docSnap.data().dailyGoal;
@@ -600,110 +595,90 @@
             renderTodayList(); 
             if (!isOnline || !userId) return;
             try {
-                const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile_v6');
+                const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
                 await setDoc(docRef, { dailyGoal: newGoal }, { merge: true });
             } catch (e) { console.error(e); }
         }
 
         async function addFoodToDB(name, calories) {
-            const todayStr = getFormattedDate();
-            const newItem = { name, calories: Number(calories), date: todayStr, timestamp: Date.now() };
+            const newItem = { name, calories: Number(calories), date: getFormattedDate(), timestamp: Date.now() };
             if (!isOnline || !userId) {
                 allConsumedItems.unshift({ id: 'temp-' + Date.now(), ...newItem });
-                renderTodayList();
-                renderCalendar();
-                return;
+                renderTodayList(); return;
             }
-            try { await addDoc(getFoodCollectionRef(), newItem); }
-            catch (e) { showAlert("Erro", "Não foi possível salvar na nuvem."); }
+            try { await addDoc(getFoodRef(), newItem); } catch (e) { console.error(e); }
         }
 
         async function deleteFoodFromDB(docId) {
             if (!isOnline || !userId) {
                 allConsumedItems = allConsumedItems.filter(item => item.id !== docId);
-                renderTodayList();
-                renderCalendar();
-                return;
+                renderTodayList(); return;
             }
-            try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'consumedFoods_v6', docId)); }
-            catch (e) { console.error(e); }
-        }
-
-        async function clearTodayFoods() {
-            const todayStr = getFormattedDate();
-            const todayItems = allConsumedItems.filter(i => i.date === todayStr);
-            if (!isOnline || !userId) {
-                allConsumedItems = allConsumedItems.filter(i => i.date !== todayStr);
-                renderTodayList();
-                renderCalendar();
-                return;
-            }
-            try {
-                const promises = todayItems.map(item => deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'consumedFoods_v6', item.id)));
-                await Promise.all(promises);
-            } catch (e) { console.error(e); }
+            try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'foods', docId)); } catch (e) { console.error(e); }
         }
 
         async function addWeightToDB(weight, dateStr) {
-            const weightNum = parseFloat(weight);
-            if (isNaN(weightNum) || weightNum <= 0) { showAlert("Inválido", "Insira um peso válido."); return; }
-            const record = { weight: weightNum, date: dateStr, timestamp: Date.now() };
+            const wNum = parseFloat(weight);
+            if (isNaN(wNum) || wNum <= 0) return;
+            const record = { weight: wNum, date: dateStr, timestamp: Date.now() };
             if (!isOnline || !userId) {
                 allWeightItems.unshift({ id: 'temp-' + Date.now(), ...record });
-                renderWeightList();
-                return;
+                renderWeightList(); return;
             }
-            try { await addDoc(getWeightCollectionRef(), record); } catch (e) { console.error(e); }
+            try { await addDoc(getWeightRef(), record); } catch (e) { console.error(e); }
         }
 
         async function deleteWeightFromDB(docId) {
             if (!isOnline || !userId) {
                 allWeightItems = allWeightItems.filter(i => i.id !== docId);
-                renderWeightList();
-                return;
+                renderWeightList(); return;
             }
-            try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'weightHistory_v6', docId)); } catch (e) { console.error(e); }
+            try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'weights', docId)); } catch (e) { console.error(e); }
         }
 
         async function addActivityToDB(name, duration, distance, calories) {
-            const todayStr = getFormattedDate();
-            const record = { name, duration: Number(duration), distance: Number(distance) || 0, calories: Math.round(calories), date: todayStr, timestamp: Date.now() };
+            const record = { name, duration: Number(duration), distance: Number(distance) || 0, calories: Math.round(calories), date: getFormattedDate(), timestamp: Date.now() };
             if (!isOnline || !userId) {
                 allActivityItems.unshift({ id: 'temp-' + Date.now(), ...record });
-                renderActivityList();
-                renderTodayList();
-                return;
+                renderActivityList(); renderTodayList(); return;
             }
-            try { await addDoc(getActivityCollectionRef(), record); } catch (e) { console.error(e); }
+            try { await addDoc(getActivityRef(), record); } catch (e) { console.error(e); }
         }
 
         async function deleteActivityFromDB(docId) {
             if (!isOnline || !userId) {
                 allActivityItems = allActivityItems.filter(i => i.id !== docId);
-                renderActivityList();
-                renderTodayList();
-                return;
+                renderActivityList(); renderTodayList(); return;
             }
-            try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'activityHistory_v6', docId)); } catch (e) { console.error(e); }
+            try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'activities', docId)); } catch (e) { console.error(e); }
         }
+
+        window.filterCategory = (cat) => {
+            currentCategoryFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = "cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 whitespace-nowrap hover:bg-slate-200 transition-all cursor-pointer";
+            });
+            event.target.className = "cat-btn px-4 py-2 rounded-xl text-xs font-black bg-[#FC4C02] text-white whitespace-nowrap shadow-sm transition-all cursor-pointer";
+            renderPredefined();
+        };
 
         function renderPredefined() {
             const container = document.getElementById('predefined-foods-container');
             container.innerHTML = '';
             
-            predefinedFoods.forEach(food => {
+            const filtered = currentCategoryFilter === 'all' 
+                ? predefinedFoods 
+                : predefinedFoods.filter(f => f.category === currentCategoryFilter);
+
+            filtered.forEach(food => {
                 const btn = document.createElement('button');
-                btn.className = 'bg-white border border-slate-100 hover:border-orange-300 hover:shadow-lg rounded-2xl p-3.5 text-left transition-all active:scale-95 flex flex-col justify-between h-full group float-hover';
+                btn.className = 'bg-white border border-slate-100 hover:border-orange-300 hover:shadow-lg rounded-2xl p-3.5 text-left transition-all active:scale-95 flex flex-col justify-between h-full group float-hover cursor-pointer';
                 const calsLabel = food.type === 'weight' ? '/100g' : '/un';
-                const svgMarkup = svgIcons[food.iconKey] || svgIcons.rice;
-                
                 btn.innerHTML = `
-                    <div class="text-[#FC4C02] mb-2 bg-orange-50 w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-[#FC4C02] group-hover:text-white transition-all shadow-sm">${svgMarkup}</div>
+                    <div class="text-[#FC4C02] mb-2 bg-orange-50 w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-[#FC4C02] group-hover:text-white transition-all shadow-sm">${svgIcons[food.iconKey] || svgIcons.meat}</div>
                     <div>
                         <div class="font-bold text-slate-800 text-sm leading-tight line-clamp-1">${food.name}</div>
-                        <div class="text-[#FC4C02] text-xs font-black mt-0.5">
-                            ${food.cals} kcal <span class="text-slate-400 font-semibold text-[10px]">${calsLabel}</span>
-                        </div>
+                        <div class="text-[#FC4C02] text-xs font-black mt-0.5">${food.cals} kcal <span class="text-slate-400 font-semibold text-[10px]">${calsLabel}</span></div>
                     </div>
                 `;
                 btn.onclick = () => openQuantityModal(food);
@@ -728,60 +703,44 @@
             const todayActivities = allActivityItems.filter(i => i.date === todayStr);
             
             const listEl = document.getElementById('consumption-list');
-            const emptyEl = document.getElementById('empty-state');
-            const clearBtn = document.getElementById('btn-clear-all');
             const totalEl = document.getElementById('total-calories');
             const burnedEl = document.getElementById('total-burned');
             
             listEl.innerHTML = '';
-            let totalConsumed = 0;
-            let totalBurned = 0;
+            let totalConsumed = 0; let totalBurned = 0;
 
-            todayActivities.forEach(act => { totalBurned += act.calories; });
+            todayActivities.forEach(act => totalBurned += act.calories);
             burnedEl.innerText = totalBurned;
 
             if (todayItems.length === 0) {
-                emptyEl.classList.remove('hidden');
-                clearBtn.classList.add('hidden');
+                document.getElementById('empty-state').classList.remove('hidden');
+                document.getElementById('btn-clear-all').classList.add('hidden');
             } else {
-                emptyEl.classList.add('hidden');
-                clearBtn.classList.remove('hidden');
+                document.getElementById('empty-state').classList.add('hidden');
+                document.getElementById('btn-clear-all').classList.remove('hidden');
 
                 todayItems.forEach(item => {
                     totalConsumed += item.calories;
                     const li = document.createElement('li');
                     li.className = 'bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex justify-between items-center animate-slide-up hover:border-orange-200 transition-all';
-                    const timeStr = item.timestamp ? new Date(item.timestamp).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}) : '';
-
                     li.innerHTML = `
-                        <div class="flex-1 pr-3">
-                            <h4 class="font-bold text-slate-800 text-sm">${item.name}</h4>
-                            <div class="text-xs text-slate-400 mt-0.5 font-semibold">${timeStr}</div>
-                        </div>
+                        <div class="flex-1 pr-3"><h4 class="font-bold text-slate-800 text-sm">${item.name}</h4></div>
                         <div class="flex items-center gap-3">
-                            <div class="text-right">
-                                <span class="font-black text-[#FC4C02] text-lg leading-none">${item.calories}</span>
-                                <span class="text-[10px] uppercase font-black text-slate-400 block -mt-1">kcal</span>
-                            </div>
-                            <button class="text-slate-300 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 p-2 rounded-xl transition-all btn-delete" data-id="${item.id}" title="Remover">
+                            <div class="text-right"><span class="font-black text-[#FC4C02] text-lg leading-none">${item.calories}</span><span class="text-[10px] uppercase font-black text-slate-400 block -mt-1">kcal</span></div>
+                            <button class="text-slate-300 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 p-2 rounded-xl transition-all cursor-pointer" onclick="deleteFood('${item.id}')">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
                         </div>
                     `;
                     listEl.appendChild(li);
                 });
-
-                document.querySelectorAll('.btn-delete').forEach(btn => {
-                    btn.onclick = () => {
-                        const id = btn.getAttribute('data-id');
-                        showAlert("Remover Alimento", "Deseja remover este item?", () => deleteFoodFromDB(id));
-                    };
-                });
             }
 
-            animateValue(totalEl, parseInt(totalEl.innerText) || 0, totalConsumed, 400);
+            totalEl.innerText = totalConsumed;
             updateProgressBar(totalConsumed, totalBurned);
         }
+
+        window.deleteFood = (id) => showAlert("Remover Alimento", "Deseja remover este item?", () => deleteFoodFromDB(id));
 
         function updateProgressBar(consumed, burned) {
             const progressBar = document.getElementById('progress-bar');
@@ -789,8 +748,8 @@
             const remainingCals = document.getElementById('remaining-cals');
             
             const netRemaining = dailyGoal + burned - consumed;
-            let percent = (consumed / (dailyGoal + burned)) * 100;
-            if (isNaN(percent)) percent = 0;
+            let percent = ((consumed) / (dailyGoal + burned)) * 100;
+            if (isNaN(percent) || !isFinite(percent)) percent = 0;
             let displayPercent = Math.min(Math.round(percent), 100);
             
             progressBar.style.width = displayPercent + '%';
@@ -798,8 +757,12 @@
             
             if (netRemaining >= 0) {
                 remainingCals.innerText = netRemaining + ' kcal restantes';
+                progressPercent.className = 'text-orange-400';
+                progressBar.className = 'bg-gradient-to-r from-[#FC4C02] to-amber-400 h-full rounded-full transition-all duration-1000 ease-out shadow-lg shadow-orange-500/50';
             } else {
                 remainingCals.innerText = Math.abs(netRemaining) + ' kcal excedidas!';
+                progressPercent.className = 'text-red-400';
+                progressBar.className = 'bg-gradient-to-r from-red-500 to-rose-400 h-full rounded-full transition-all duration-1000 ease-out shadow-lg shadow-red-500/50';
             }
         }
 
@@ -807,55 +770,37 @@
             const todayStr = getFormattedDate();
             const todayActivities = allActivityItems.filter(i => i.date === todayStr);
             const listEl = document.getElementById('activity-list');
-            const emptyEl = document.getElementById('activity-empty-state');
-            const dashboardBurned = document.getElementById('dashboard-burned-display');
-            const countDisplay = document.getElementById('activity-count-display');
-            
             listEl.innerHTML = '';
             let totalBurnedToday = 0;
 
             if (todayActivities.length === 0) {
-                emptyEl.classList.remove('hidden');
-                dashboardBurned.innerText = '0';
-                countDisplay.innerText = 'Nenhuma atividade registrada hoje';
+                document.getElementById('activity-empty-state').classList.remove('hidden');
+                document.getElementById('dashboard-burned-display').innerText = '0';
+                document.getElementById('activity-count-display').innerText = 'Nenhuma atividade registrada hoje';
             } else {
-                emptyEl.classList.add('hidden');
-                todayActivities.forEach(act => { totalBurnedToday += act.calories; });
-                dashboardBurned.innerText = totalBurnedToday;
-                countDisplay.innerText = `${todayActivities.length} ${todayActivities.length === 1 ? 'atividade registrada' : 'atividades registradas'}`;
+                document.getElementById('activity-empty-state').classList.add('hidden');
+                todayActivities.forEach(act => totalBurnedToday += act.calories);
+                document.getElementById('dashboard-burned-display').innerText = totalBurnedToday;
+                document.getElementById('activity-count-display').innerText = `${todayActivities.length} atividades registradas`;
 
                 todayActivities.forEach(item => {
                     const li = document.createElement('li');
                     li.className = 'bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex justify-between items-center animate-slide-up hover:border-orange-200 transition-all';
-                    
                     li.innerHTML = `
-                        <div class="flex-1 pr-3">
-                            <h4 class="font-bold text-slate-800 text-sm">${item.name}</h4>
-                            <div class="text-xs text-slate-400 mt-0.5 font-semibold">
-                                ${item.duration} min ${item.distance > 0 ? `• ${item.distance} km` : ''}
-                            </div>
-                        </div>
+                        <div class="flex-1 pr-3"><h4 class="font-bold text-slate-800 text-sm">${item.name}</h4><div class="text-xs text-slate-400 mt-0.5 font-semibold">${item.duration} min ${item.distance > 0 ? `• ${item.distance} km` : ''}</div></div>
                         <div class="flex items-center gap-3">
-                            <div class="text-right">
-                                <span class="font-black text-orange-500 text-lg leading-none">-${item.calories}</span>
-                                <span class="text-[10px] uppercase font-black text-slate-400 block -mt-1">kcal</span>
-                            </div>
-                            <button class="text-slate-300 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 p-2 rounded-xl transition-all btn-delete-activity" data-id="${item.id}" title="Remover">
+                            <div class="text-right"><span class="font-black text-[#FC4C02] text-lg leading-none">-${item.calories}</span><span class="text-[10px] uppercase font-black text-slate-400 block -mt-1">kcal</span></div>
+                            <button class="text-slate-300 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 p-2 rounded-xl transition-all cursor-pointer" onclick="deleteActivity('${item.id}')">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
                         </div>
                     `;
                     listEl.appendChild(li);
                 });
-
-                document.querySelectorAll('.btn-delete-activity').forEach(btn => {
-                    btn.onclick = () => {
-                        const id = btn.getAttribute('data-id');
-                        showAlert("Remover Atividade", "Deseja remover esta atividade?", () => deleteActivityFromDB(id));
-                    };
-                });
             }
         }
+
+        window.deleteActivity = (id) => showAlert("Remover Atividade", "Deseja remover esta atividade?", () => deleteActivityFromDB(id));
 
         function renderCalendar() {
             const year = currentCalendarDate.getFullYear();
@@ -868,18 +813,13 @@
 
             const firstDayIndex = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
-
             const mapByDate = {};
             allConsumedItems.forEach(item => {
                 if (!mapByDate[item.date]) mapByDate[item.date] = [];
                 mapByDate[item.date].push(item);
             });
 
-            for (let i = 0; i < firstDayIndex; i++) {
-                const emptyCell = document.createElement('div');
-                emptyCell.className = 'h-12 bg-slate-50/50 rounded-xl';
-                grid.appendChild(emptyCell);
-            }
+            for (let i = 0; i < firstDayIndex; i++) { grid.innerHTML += `<div class="h-12 bg-slate-50/50 rounded-xl"></div>`; }
 
             for (let day = 1; day <= totalDays; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -888,172 +828,94 @@
 
                 const cell = document.createElement('div');
                 cell.className = 'h-12 rounded-2xl flex flex-col items-center justify-center relative border border-slate-100 transition-all font-bold text-xs cursor-pointer ';
-                
                 let dotColor = 'bg-slate-200';
+                
                 if (dayItems.length > 0) {
-                    if (dayTotalCals <= dailyGoal) {
-                        cell.className += ' bg-emerald-50 text-emerald-900 border-emerald-200 hover:bg-emerald-100';
-                        dotColor = 'bg-emerald-500';
-                    } else {
-                        cell.className += ' bg-orange-50 text-orange-900 border-orange-200 hover:bg-orange-100';
-                        dotColor = 'bg-orange-500';
-                    }
-                } else {
-                    cell.className += ' bg-white text-slate-700 hover:bg-slate-50';
-                }
+                    if (dayTotalCals <= dailyGoal) { cell.className += ' bg-emerald-50 text-emerald-900 border-emerald-200'; dotColor = 'bg-emerald-500'; } 
+                    else { cell.className += ' bg-orange-50 text-orange-900 border-orange-200'; dotColor = 'bg-[#FC4C02]'; }
+                } else { cell.className += ' bg-white text-slate-700'; }
 
-                cell.innerHTML = `
-                    <span>${day}</span>
-                    ${dayItems.length > 0 ? `<span class="w-1.5 h-1.5 rounded-full ${dotColor} mt-1"></span>` : ''}
-                `;
-
+                cell.innerHTML = `<span>${day}</span>${dayItems.length > 0 ? `<span class="w-1.5 h-1.5 rounded-full ${dotColor} mt-1"></span>` : ''}`;
                 cell.onclick = () => showDayDetails(dateStr, dayItems, dayTotalCals);
                 grid.appendChild(cell);
             }
         }
 
         function showDayDetails(dateStr, items, totalCals) {
-            const container = document.getElementById('selected-day-container');
-            const titleEl = document.getElementById('selected-day-title');
-            const totalEl = document.getElementById('selected-day-total');
-            const listEl = document.getElementById('selected-day-list');
-            
-            container.classList.remove('hidden');
+            document.getElementById('selected-day-container').classList.remove('hidden');
             const parts = dateStr.split('-');
-            titleEl.innerText = `Dia ${parts[2]}/${parts[1]}/${parts[0]}`;
-            totalEl.innerText = `${totalCals} kcal`;
+            document.getElementById('selected-day-title').innerText = `Dia ${parts[2]}/${parts[1]}/${parts[0]}`;
+            document.getElementById('selected-day-total').innerText = `${totalCals} kcal`;
+            const listEl = document.getElementById('selected-day-list');
             listEl.innerHTML = '';
 
-            if (items.length === 0) {
-                listEl.innerHTML = `<li class="text-slate-400 text-xs text-center py-4">Nenhum registro neste dia.</li>`;
-                return;
-            }
-
+            if (items.length === 0) { listEl.innerHTML = `<li class="text-slate-400 text-xs text-center py-4">Nenhum registro.</li>`; return; }
             items.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'bg-slate-50 border border-slate-100 rounded-xl p-3 flex justify-between items-center text-xs';
-                li.innerHTML = `
-                    <span class="font-bold text-slate-800">${item.name}</span>
-                    <span class="font-black text-[#FC4C02]">${item.calories} kcal</span>
-                `;
-                listEl.appendChild(li);
+                listEl.innerHTML += `<li class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex justify-between items-center text-xs"><span class="font-bold text-slate-800">${item.name}</span><span class="font-black text-[#FC4C02]">${item.calories} kcal</span></li>`;
             });
         }
 
         function renderWeightList() {
             const listEl = document.getElementById('weight-history-list');
-            const emptyEl = document.getElementById('weight-empty-state');
-            const currentDisplay = document.getElementById('current-weight-display');
-            const diffDisplay = document.getElementById('weight-diff-display');
-            
             listEl.innerHTML = '';
-
             if (allWeightItems.length === 0) {
-                emptyEl.classList.remove('hidden');
-                currentDisplay.innerText = '--';
-                diffDisplay.innerText = 'Cadastre seu peso para ver a evolução';
-                return;
+                document.getElementById('weight-empty-state').classList.remove('hidden');
+                document.getElementById('current-weight-display').innerText = '--';
+                document.getElementById('weight-diff-display').innerText = 'Cadastre seu peso'; return;
             }
-
-            emptyEl.classList.add('hidden');
+            document.getElementById('weight-empty-state').classList.add('hidden');
             const latest = allWeightItems[0];
             const oldest = allWeightItems[allWeightItems.length - 1];
             
-            currentDisplay.innerText = latest.weight.toFixed(1);
+            document.getElementById('current-weight-display').innerText = latest.weight.toFixed(1);
             if (allWeightItems.length > 1) {
                 const diff = latest.weight - oldest.weight;
-                const sign = diff > 0 ? '+' : '';
-                diffDisplay.innerText = `Diferença total: ${sign}${diff.toFixed(1)} kg`;
-            } else {
-                diffDisplay.innerText = `Primeiro registro cadastrado!`;
-            }
+                document.getElementById('weight-diff-display').innerText = `Diferença total: ${diff > 0 ? '+' : ''}${diff.toFixed(1)} kg`;
+            } else { document.getElementById('weight-diff-display').innerText = `Primeiro registro!`; }
 
             allWeightItems.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'bg-slate-50 border border-slate-100 rounded-2xl p-3.5 flex justify-between items-center text-sm';
                 const parts = item.date.split('-');
-                const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
-
-                li.innerHTML = `
-                    <div>
-                        <span class="font-bold text-slate-800">${item.weight} kg</span>
-                        <div class="text-[11px] text-slate-400 font-semibold mt-0.5">${formattedDate}</div>
-                    </div>
-                    <button class="text-slate-300 hover:text-rose-500 bg-white hover:bg-rose-50 p-2 rounded-xl transition-all btn-delete-weight" data-id="${item.id}" title="Remover">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    </button>
-                `;
-                listEl.appendChild(li);
-            });
-
-            document.querySelectorAll('.btn-delete-weight').forEach(btn => {
-                btn.onclick = () => {
-                    const id = btn.getAttribute('data-id');
-                    showAlert("Remover Peso", "Deseja remover este registro?", () => deleteWeightFromDB(id));
-                };
+                listEl.innerHTML += `
+                    <li class="bg-slate-50 border border-slate-100 rounded-2xl p-3.5 flex justify-between items-center text-sm">
+                        <div><span class="font-bold text-slate-800">${item.weight} kg</span><div class="text-[11px] text-slate-400 font-semibold mt-0.5">${parts[2]}/${parts[1]}/${parts[0]}</div></div>
+                        <button class="text-slate-300 hover:text-rose-500 bg-white hover:bg-rose-50 p-2 rounded-xl transition-all cursor-pointer" onclick="deleteWeight('${item.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                    </li>`;
             });
         }
+        window.deleteWeight = (id) => showAlert("Remover Peso", "Deseja remover este registro?", () => deleteWeightFromDB(id));
 
-        function animateValue(obj, start, end, duration) {
-            if (start === end) { obj.innerHTML = end; return; }
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerHTML = Math.floor(progress * (end - start) + start);
-                if (progress < 1) window.requestAnimationFrame(step);
-                else obj.innerHTML = end;
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        function showModalEl(modalId, contentId) {
-            const m = document.getElementById(modalId);
-            const c = document.getElementById(contentId);
-            m.classList.remove('hidden');
-            setTimeout(() => { m.classList.remove('opacity-0'); c.classList.remove('scale-95'); }, 10);
-        }
-
-        function hideModalEl(modalId, contentId) {
-            const m = document.getElementById(modalId);
-            const c = document.getElementById(contentId);
-            m.classList.add('opacity-0');
-            c.classList.add('scale-95');
-            setTimeout(() => m.classList.add('hidden'), 300);
-        }
+        function showModalEl(mId, cId) { document.getElementById(mId).classList.remove('hidden'); setTimeout(() => { document.getElementById(mId).classList.remove('opacity-0'); document.getElementById(cId).classList.remove('scale-95'); }, 10); }
+        function hideModalEl(mId, cId) { document.getElementById(mId).classList.add('opacity-0'); document.getElementById(cId).classList.add('scale-95'); setTimeout(() => document.getElementById(mId).classList.add('hidden'), 300); }
 
         let currentAlertCallback = null;
         function showAlert(title, message, confirmCallback = null) {
-            document.getElementById('alert-title').innerText = title;
-            document.getElementById('alert-message').innerText = message;
+            document.getElementById('alert-title').innerText = title; document.getElementById('alert-message').innerText = message;
             currentAlertCallback = confirmCallback;
-            const btnCancel = document.getElementById('alert-btn-cancel');
-            if (confirmCallback) {
-                btnCancel.classList.remove('hidden');
-                document.getElementById('alert-btn-confirm').innerText = "Confirmar";
+            const btnCancel = document.getElementById('alert-btn-cancel'); const iconContainer = document.getElementById('alert-icon-container');
+
+            if (title.includes('Erro') || title.includes('Aviso') || title.includes('Remover')) {
+                iconContainer.className = "w-14 h-14 bg-red-100 rounded-3xl flex items-center justify-center mb-4 text-red-500 mx-auto shadow-sm";
+                document.getElementById('alert-btn-confirm').className = "flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-red-500 hover:bg-red-600 active:scale-95 transition-all cursor-pointer";
             } else {
-                btnCancel.classList.add('hidden');
-                document.getElementById('alert-btn-confirm').innerText = "OK";
+                iconContainer.className = "w-14 h-14 bg-orange-100 rounded-3xl flex items-center justify-center mb-4 text-[#FC4C02] mx-auto shadow-sm";
+                document.getElementById('alert-btn-confirm').className = "flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 transition-all cursor-pointer";
             }
+            if (confirmCallback) { btnCancel.classList.remove('hidden'); document.getElementById('alert-btn-confirm').innerText = "Confirmar"; } 
+            else { btnCancel.classList.add('hidden'); document.getElementById('alert-btn-confirm').innerText = "OK"; }
             showModalEl('alert-modal', 'alert-modal-content');
         }
 
         let currentFood = null;
         function openQuantityModal(food) {
             currentFood = food;
-            document.getElementById('q-modal-icon').innerHTML = svgIcons[food.iconKey] || svgIcons.rice;
+            document.getElementById('q-modal-icon').innerHTML = svgIcons[food.iconKey] || svgIcons.meat;
             document.getElementById('q-modal-title').innerText = food.name;
             const isWeight = food.type === 'weight';
-            document.getElementById('q-modal-desc').innerText = `Base: ${food.cals} kcal por ${isWeight ? '100g' : '1 unidade'}`;
-            document.getElementById('q-modal-label').innerText = isWeight ? 'Sua porção (gramas)' : 'Quantidade (unidades)';
+            document.getElementById('q-modal-desc').innerText = `Base: ${food.cals} kcal por ${isWeight ? '100g' : '1 un'}`;
+            document.getElementById('q-modal-label').innerText = isWeight ? 'Porção (gramas)' : 'Quantidade (unidades)';
             document.getElementById('q-modal-unit').innerText = isWeight ? 'g' : 'un';
-            
-            const input = document.getElementById('q-modal-input');
-            input.value = isWeight ? 100 : 1;
-            updateQModalTotal();
-            
-            showModalEl('quantity-modal', 'q-modal-content');
-            setTimeout(() => { input.focus(); input.select(); }, 100);
+            document.getElementById('q-modal-input').value = isWeight ? 100 : 1;
+            updateQModalTotal(); showModalEl('quantity-modal', 'q-modal-content');
         }
 
         function updateQModalTotal() {
@@ -1064,163 +926,65 @@
         }
 
         window.onload = () => {
-            const options = { weekday: 'long', day: 'numeric', month: 'long' };
-            let dateStr = new Date().toLocaleDateString('pt-BR', options);
-            document.getElementById('current-date').innerText = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
             document.getElementById('weight-date-input').value = getFormattedDate();
 
-            renderPredefined();
-            renderActivitySelectOptions();
+            renderPredefined(); renderActivitySelectOptions();
+            
             initFirebase();
 
-            const viewToday = document.getElementById('view-today');
-            const viewActivities = document.getElementById('view-activities');
-            const viewCalendar = document.getElementById('view-calendar');
-            const viewWeight = document.getElementById('view-weight');
-            const navToday = document.getElementById('nav-today');
-            const navActivities = document.getElementById('nav-activities');
-            const navCalendar = document.getElementById('nav-calendar');
-            const navWeight = document.getElementById('nav-weight');
+            const views = { today: document.getElementById('view-today'), activities: document.getElementById('view-activities'), calendar: document.getElementById('view-calendar'), weight: document.getElementById('view-weight') };
+            const navs = { today: document.getElementById('nav-today'), activities: document.getElementById('nav-activities'), calendar: document.getElementById('nav-calendar'), weight: document.getElementById('nav-weight') };
 
             function switchNav(active) {
-                viewToday.classList.add('hidden');
-                viewActivities.classList.add('hidden');
-                viewCalendar.classList.add('hidden');
-                viewWeight.classList.add('hidden');
+                Object.values(views).forEach(v => v.classList.add('hidden'));
+                Object.values(navs).forEach(n => { n.className = 'flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group cursor-pointer'; n.querySelector('div').className = 'p-1.5 rounded-xl group-hover:bg-slate-100 group-hover:scale-110 transition-all'; });
                 
-                [navToday, navActivities, navCalendar, navWeight].forEach(nav => {
-                    nav.className = 'flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group';
-                    nav.querySelector('div').className = 'p-1.5 rounded-xl group-hover:bg-slate-100 group-hover:scale-110 transition-all';
-                });
-
-                if (active === 'today') {
-                    viewToday.classList.remove('hidden');
-                    navToday.className = 'flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group';
-                    navToday.querySelector('div').className = 'p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform';
-                } else if (active === 'activities') {
-                    viewActivities.classList.remove('hidden');
-                    navActivities.className = 'flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group';
-                    navActivities.querySelector('div').className = 'p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform';
-                } else if (active === 'calendar') {
-                    viewCalendar.classList.remove('hidden');
-                    navCalendar.className = 'flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group';
-                    navCalendar.querySelector('div').className = 'p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform';
-                    renderCalendar();
-                } else if (active === 'weight') {
-                    viewWeight.classList.remove('hidden');
-                    navWeight.className = 'flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group';
-                    navWeight.querySelector('div').className = 'p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform';
-                }
+                views[active].classList.remove('hidden');
+                navs[active].className = 'flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group cursor-pointer';
+                navs[active].querySelector('div').className = 'p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform';
+                if(active === 'calendar') renderCalendar();
             }
-
-            navToday.onclick = () => switchNav('today');
-            navActivities.onclick = () => switchNav('activities');
-            navCalendar.onclick = () => switchNav('calendar');
-            navWeight.onclick = () => switchNav('weight');
+            Object.keys(navs).forEach(k => navs[k].onclick = () => switchNav(k));
 
             document.getElementById('cal-prev-month').onclick = () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderCalendar(); };
             document.getElementById('cal-next-month').onclick = () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderCalendar(); };
 
-            const tabQuick = document.getElementById('tab-quick');
-            const tabManual = document.getElementById('tab-manual');
-            const subViewQuick = document.getElementById('view-quick');
-            const subViewManual = document.getElementById('view-manual');
-
-            tabQuick.onclick = () => {
-                tabQuick.className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all bg-white text-[#FC4C02] shadow-md';
-                tabManual.className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all text-slate-500 hover:text-slate-700';
-                subViewQuick.classList.remove('hidden');
-                subViewManual.classList.add('hidden');
-            };
-
-            tabManual.onclick = () => {
-                tabManual.className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all bg-white text-[#FC4C02] shadow-md';
-                tabQuick.className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all text-slate-500 hover:text-slate-700';
-                subViewManual.classList.remove('hidden');
-                subViewQuick.classList.add('hidden');
-            };
+            document.getElementById('tab-quick').onclick = () => { document.getElementById('tab-quick').className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all bg-white text-[#FC4C02] shadow-md cursor-pointer'; document.getElementById('tab-manual').className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all text-slate-500 hover:text-slate-700 cursor-pointer'; document.getElementById('view-quick').classList.remove('hidden'); document.getElementById('view-manual').classList.add('hidden'); };
+            document.getElementById('tab-manual').onclick = () => { document.getElementById('tab-manual').className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all bg-white text-[#FC4C02] shadow-md cursor-pointer'; document.getElementById('tab-quick').className = 'flex-1 text-sm font-bold py-3 rounded-xl transition-all text-slate-500 hover:text-slate-700 cursor-pointer'; document.getElementById('view-manual').classList.remove('hidden'); document.getElementById('view-quick').classList.add('hidden'); };
 
             document.getElementById('btn-add-manual').onclick = () => {
-                const nameInput = document.getElementById('manual-name');
-                const calInput = document.getElementById('manual-calories');
-                const name = nameInput.value.trim();
-                const cals = parseInt(calInput.value);
-
-                if (!name || isNaN(cals) || cals <= 0) { showAlert("Dados Inválidos", "Preencha o nome e calorias."); return; }
-                addFoodToDB('🍽️ ' + name, cals);
-                nameInput.value = ''; calInput.value = '';
-                tabQuick.click();
+                const name = document.getElementById('manual-name').value.trim(); const cals = parseInt(document.getElementById('manual-calories').value);
+                if (!name || isNaN(cals) || cals <= 0) return showAlert("Aviso", "Preencha o nome e calorias validamente.");
+                addFoodToDB('🍽️ ' + name, cals); document.getElementById('manual-name').value = ''; document.getElementById('manual-calories').value = ''; document.getElementById('tab-quick').click();
             };
 
             document.getElementById('alert-btn-cancel').onclick = () => hideModalEl('alert-modal', 'alert-modal-content');
-            document.getElementById('alert-btn-confirm').onclick = () => {
-                if (currentAlertCallback) currentAlertCallback();
-                hideModalEl('alert-modal', 'alert-modal-content');
-            };
+            document.getElementById('alert-btn-confirm').onclick = () => { if (currentAlertCallback) currentAlertCallback(); hideModalEl('alert-modal', 'alert-modal-content'); };
 
-            document.getElementById('btn-clear-all').onclick = () => {
-                showAlert("Limpar Histórico", "Apagar tudo o que foi consumido hoje?", clearTodayFoods);
-            };
-
-            document.getElementById('btn-edit-goal').onclick = () => {
-                const input = document.getElementById('goal-modal-input');
-                input.value = dailyGoal;
-                showModalEl('goal-modal', 'goal-modal-content');
-                setTimeout(() => { input.focus(); input.select(); }, 100);
-            };
+            document.getElementById('btn-edit-goal').onclick = () => { document.getElementById('goal-modal-input').value = dailyGoal; showModalEl('goal-modal', 'goal-modal-content'); };
             document.getElementById('goal-btn-cancel').onclick = () => hideModalEl('goal-modal', 'goal-modal-content');
-            document.getElementById('goal-btn-confirm').onclick = () => {
-                let newGoal = parseInt(document.getElementById('goal-modal-input').value);
-                if (isNaN(newGoal) || newGoal <= 0) { showAlert("Inválido", "Insira uma meta maior que zero."); return; }
-                saveGoalToDB(newGoal);
-                hideModalEl('goal-modal', 'goal-modal-content');
-            };
+            document.getElementById('goal-btn-confirm').onclick = () => { let newGoal = parseInt(document.getElementById('goal-modal-input').value); if (isNaN(newGoal) || newGoal <= 0) return showAlert("Aviso", "Insira uma meta maior que zero."); saveGoalToDB(newGoal); hideModalEl('goal-modal', 'goal-modal-content'); };
 
-            document.getElementById('btn-save-weight').onclick = () => {
-                const weightVal = document.getElementById('weight-input').value;
-                const dateVal = document.getElementById('weight-date-input').value;
-                if (!weightVal || !dateVal) { showAlert("Campos Vagos", "Preencha o peso e a data."); return; }
-                addWeightToDB(weightVal, dateVal);
-                document.getElementById('weight-input').value = '';
-            };
+            document.getElementById('btn-save-weight').onclick = () => { const w = document.getElementById('weight-input').value; const d = document.getElementById('weight-date-input').value; if (!w || !d) return showAlert("Aviso", "Preencha peso e data."); addWeightToDB(w, d); document.getElementById('weight-input').value = ''; };
 
             document.getElementById('btn-add-activity').onclick = () => {
-                const actIndex = document.getElementById('activity-select').value;
-                const durationVal = document.getElementById('activity-duration').value;
-                const distanceVal = document.getElementById('activity-distance').value;
-
-                if (!durationVal || durationVal <= 0) { showAlert("Tempo Inválido", "Insira a quantidade de minutos."); return; }
-
-                const act = predefinedActivities[actIndex];
-                const duration = parseFloat(durationVal);
-                const distance = parseFloat(distanceVal) || 0;
-                let calculatedCals = (duration * act.baseBurnPerMin) + (distance * act.kmBurn);
-
-                addActivityToDB(`${act.icon} ${act.name}`, duration, distance, calculatedCals);
-                document.getElementById('activity-duration').value = '';
-                document.getElementById('activity-distance').value = '';
+                const act = predefinedActivities[document.getElementById('activity-select').value];
+                const dur = parseFloat(document.getElementById('activity-duration').value);
+                const dist = parseFloat(document.getElementById('activity-distance').value) || 0;
+                if (!dur || dur <= 0) return showAlert("Aviso", "Insira a quantidade de minutos da atividade.");
+                addActivityToDB(`${act.icon} ${act.name}`, dur, dist, (dur * act.baseBurnPerMin) + (dist * act.kmBurn));
+                document.getElementById('activity-duration').value = ''; document.getElementById('activity-distance').value = '';
             };
 
-            const qInput = document.getElementById('q-modal-input');
-            qInput.addEventListener('input', updateQModalTotal);
+            document.getElementById('q-modal-input').addEventListener('input', updateQModalTotal);
             document.getElementById('q-modal-btn-cancel').onclick = () => hideModalEl('quantity-modal', 'q-modal-content');
             document.getElementById('q-modal-btn-confirm').onclick = () => {
-                let amount = parseFloat(qInput.value) || 0;
-                if (amount <= 0) return;
-                
-                let totalCals = 0;
-                let displayName = currentFood.name;
-                
-                if (currentFood.type === 'weight') {
-                    totalCals = (amount / 100) * currentFood.cals;
-                    displayName += ` (${amount}g)`;
-                } else {
-                    totalCals = amount * currentFood.cals;
-                    displayName += ` (${amount}un)`;
-                }
-                
-                addFoodToDB(displayName, Math.round(totalCals));
-                hideModalEl('quantity-modal', 'q-modal-content');
+                let amt = parseFloat(document.getElementById('q-modal-input').value) || 0;
+                if (amt <= 0) return;
+                let cals = currentFood.type === 'weight' ? (amt / 100) * currentFood.cals : amt * currentFood.cals;
+                let dn = currentFood.type === 'weight' ? `${currentFood.name} (${amt}g)` : `${currentFood.name} (${amt}un)`;
+                addFoodToDB(dn, Math.round(cals)); hideModalEl('quantity-modal', 'q-modal-content');
             };
         };
     </script>
