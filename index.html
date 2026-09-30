@@ -420,10 +420,24 @@
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, getDocs, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'calorie-tracker-app';
-        let firebaseConfig = {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'projetin-fitness-app';
+        
+        // 👇 Configuração do Firebase
+        let firebaseConfig = {
+            apiKey: "AIzaSyDI6JBGwynq1ybkqhMxgD8xcxp4icU-1lQ",
+            authDomain: "projetinfitness-1278c.firebaseapp.com",
+            databaseURL: "https://projetinfitness-1278c-default-rtdb.firebaseio.com",
+            projectId: "projetinfitness-1278c",
+            storageBucket: "projetinfitness-1278c.firebasestorage.app",
+            messagingSenderId: "714052946283",
+            appId: "1:714052946283:web:c5fd97999590de9608e42e",
+            measurementId: "G-VRQMYCJPRB"
+        };
+
         try {
-            if (typeof __firebase_config !== 'undefined') firebaseConfig = JSON.parse(__firebase_config);
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                firebaseConfig = JSON.parse(__firebase_config);
+            }
         } catch (e) { console.error("Erro config:", e); }
 
         let app, db, auth, userId;
