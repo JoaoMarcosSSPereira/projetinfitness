@@ -294,11 +294,11 @@
                     </div>
                 </div>
 
-                <!-- UNIFIED BIOMETRY & WEIGHT CARD -->
+                <!-- UNIFIED BIOMETRY & WEIGHT CARD WITH SINGLE SAVE BUTTON -->
                 <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 space-y-5">
                     <div>
-                        <h3 class="font-black text-slate-900 text-base">Biometria & Peso</h3>
-                        <p class="text-xs text-slate-400 font-semibold mt-0.5">Atualize seus dados corporais e peso atual</p>
+                        <h3 class="font-black text-slate-900 text-base">Perfil Físico & Peso</h3>
+                        <p class="text-xs text-slate-400 font-semibold mt-0.5">Atualize seus dados corporais e peso atual em um só clique</p>
                     </div>
 
                     <div class="grid grid-cols-3 gap-3">
@@ -330,14 +330,10 @@
                         </div>
                     </div>
 
-                    <div class="flex gap-2 pt-1">
-                        <button id="btn-save-profile" class="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-black py-3.5 rounded-2xl transition-all text-xs flex justify-center items-center gap-1 shadow-md cursor-pointer">
-                            Salvar Perfil
-                        </button>
-                        <button id="btn-save-weight" class="flex-1 bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-3.5 rounded-2xl transition-all text-xs flex justify-center items-center gap-1 shadow-lg shadow-orange-500/30 cursor-pointer">
-                            Salvar Peso
-                        </button>
-                    </div>
+                    <button id="btn-save-biometry" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        Salvar Informações
+                    </button>
                 </div>
 
                 <!-- MEDIDAS CORPORAIS -->
@@ -392,90 +388,8 @@
                     <ul id="measurements-history-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></ul>
                 </div>
             </div>
-
-            <!-- VIEW: COACH IA -->
-            <div id="view-coach" class="hidden space-y-6 animate-fade-in pb-8">
-                <div class="bg-gradient-to-br from-[#121214] via-[#1a1a1e] to-[#2b2b30] rounded-[2.5rem] p-6 text-white shadow-xl strava-glow relative overflow-hidden">
-                    <div class="relative z-10 flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-[#FC4C02] flex items-center justify-center text-white text-2xl shadow-lg">
-                            🤖
-                        </div>
-                        <div>
-                            <span class="text-orange-400 text-xs font-black uppercase tracking-widest block">Inteligência Artificial</span>
-                            <h2 class="text-xl font-black text-white">Coach Fit AI</h2>
-                        </div>
-                    </div>
-                    <p class="text-xs text-slate-300 mt-3 font-semibold relative z-10">
-                        Pergunte sobre receitas, tire foto do seu prato ou peça dicas de treino baseadas no seu saldo calórico!
-                    </p>
-                </div>
-
-                <!-- SCANNER DE PRATOS POR FOTO (VISÃO COMPUTACIONAL) -->
-                <div class="bg-white rounded-[2.5rem] p-5 shadow-sm border border-slate-100 space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">📸</span>
-                            <h3 class="font-black text-slate-900 text-sm">Scanner de Prato por Foto</h3>
-                        </div>
-                        <span class="text-[10px] bg-orange-50 text-[#FC4C02] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">Gemini Vision</span>
-                    </div>
-                    <p class="text-xs text-slate-500 font-medium">Tire ou envie a foto de sua refeição para a IA estimar as calorias e alimentos.</p>
-                    
-                    <div class="flex items-center gap-3">
-                        <label class="flex-1 border-2 border-dashed border-slate-200 hover:border-[#FC4C02] bg-slate-50 hover:bg-orange-50/50 rounded-2xl p-4 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-1">
-                            <svg class="w-6 h-6 text-[#FC4C02]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812-1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            <span class="text-xs font-bold text-slate-700" id="photo-label-text">Selecionar Foto do Prato</span>
-                            <input type="file" id="meal-photo-input" accept="image/*" class="hidden">
-                        </label>
-                    </div>
-
-                    <div id="scan-result-container" class="hidden bg-orange-50 border border-orange-100 rounded-2xl p-4 space-y-3 animate-fade-in">
-                        <div class="flex justify-between items-center">
-                            <span class="font-black text-xs text-[#FC4C02] uppercase tracking-wider">Resultado da Análise</span>
-                            <span id="scanned-cals-badge" class="font-black text-sm text-[#FC4C02] bg-white px-3 py-0.5 rounded-full shadow-sm">0 kcal</span>
-                        </div>
-                        <p id="scanned-foods-text" class="text-xs font-medium text-slate-800"></p>
-                        <button id="btn-add-scanned-food" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-3 rounded-xl text-xs transition-all shadow-md shadow-orange-500/30 cursor-pointer">
-                            + Adicionar ao Diário de Hoje
-                        </button>
-                    </div>
-                </div>
-
-                <!-- SUGESTÕES RÁPIDAS (CHIPS) -->
-                <div class="space-y-2">
-                    <span class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Sugestões Rápidas</span>
-                    <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-                        <button onclick="sendQuickPrompt('O que posso jantar com as calorias que me restam hoje?')" class="bg-white hover:bg-orange-50 hover:border-orange-200 border border-slate-100 text-slate-700 hover:text-[#FC4C02] px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap shadow-sm transition-all cursor-pointer">
-                            🍽️ O que jantar hoje?
-                        </button>
-                        <button onclick="sendQuickPrompt('Me sugira uma receita rápida e proteica para o pós-treino.')" class="bg-white hover:bg-orange-50 hover:border-orange-200 border border-slate-100 text-slate-700 hover:text-[#FC4C02] px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap shadow-sm transition-all cursor-pointer">
-                            🍳 Receita Proteica
-                        </button>
-                        <button onclick="sendQuickPrompt('Faça uma avaliação motivacional do meu progresso e dieta atual.')" class="bg-white hover:bg-orange-50 hover:border-orange-200 border border-slate-100 text-slate-700 hover:text-[#FC4C02] px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap shadow-sm transition-all cursor-pointer">
-                            📊 Avaliar meu dia
-                        </button>
-                    </div>
-                </div>
-
-                <!-- CHAT CONTAINER -->
-                <div class="bg-white rounded-[2.5rem] p-5 shadow-sm border border-slate-100 flex flex-col h-[380px]">
-                    <div id="chat-messages" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm pb-2">
-                        <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-slate-800 text-xs font-medium">
-                            <span class="font-black text-[#FC4C02] block mb-1">Coach Fit ⚡</span>
-                            Olá! Sou seu assistente de nutrição e performance. Pergunte o que quiser ou envie uma foto do seu prato acima!
-                        </div>
-                    </div>
-                    <div class="pt-3 border-t border-slate-100 flex gap-2">
-                        <input type="text" id="chat-input" placeholder="Ex: O que posso jantar com as calorias que restam?" class="flex-1 px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-xs font-medium">
-                        <button id="btn-send-chat" class="bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white px-5 rounded-2xl transition-all font-black text-xs shadow-md shadow-orange-500/30 cursor-pointer flex items-center justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </main>
 
-        <!-- NAVIGATION BAR -->
         <nav class="bg-white/95 backdrop-blur-md border-t border-slate-100 py-3 px-4 fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto flex justify-around items-center shadow-2xl">
             <button id="nav-today" class="flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group cursor-pointer">
                 <div class="p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform">
@@ -500,12 +414,6 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
                 </div>
                 <span>Peso</span>
-            </button>
-            <button id="nav-coach" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group cursor-pointer">
-                <div class="p-1.5 rounded-xl group-hover:bg-slate-100 group-hover:scale-110 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 4.206c.323.97-.417 1.994-1.433 1.994H4.231c-1.016 0-1.756-1.024-1.433-1.994L4.2 15.3"/></svg>
-                </div>
-                <span>Coach IA</span>
             </button>
         </nav>
     </div>
@@ -666,53 +574,6 @@
             { name: 'Musculação', baseBurnPerMin: 5.5, kmBurn: 0, icon: '🏋' }
         ];
 
-        const GEMINI_API_KEY = "AQ.Ab8RN6KCR-bxE0wYMNIpAzcOtOsai0B2UlSH688BGctF5_E3Rw";
-
-        async function chamarGeminiAPI(promptText, inlineDataObj = null) {
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-            const parts = [];
-            if (inlineDataObj) parts.push({ inlineData: inlineDataObj });
-            parts.push({ text: promptText });
-
-            const payload = { contents: [{ parts }] };
-            const res = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await res.json();
-            return data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
-        }
-
-        async function perguntarCoachFit(perguntaUsuario, inlineImg = null) {
-            const todayStr = getFormattedDate();
-            const todayItems = allConsumedItems.filter(i => i.date === todayStr);
-            const totalConsumed = todayItems.reduce((acc, curr) => acc + curr.calories, 0);
-            const todayActivities = allActivityItems.filter(i => i.date === todayStr);
-            const totalBurned = todayActivities.reduce((acc, curr) => acc + curr.calories, 0);
-            const remaining = dailyGoal + totalBurned - totalConsumed;
-
-            const systemContext = `
-                Você é o "Coach Fit", assistente motivacional e nutricional do Projetin Fitness.
-                Meta diária: ${dailyGoal} kcal. Consumido hoje: ${totalConsumed} kcal. Queimado em treinos: ${totalBurned} kcal. Restantes: ${remaining} kcal.
-            `;
-
-            try {
-                if (inlineImg) {
-                    const prompt = `${systemContext}\nAnalise esta foto de refeição. Liste os alimentos identificados e retorne obrigatoriamente um JSON válido no formato exato: {"alimentos": "descrição curta", "calorias": número_inteiro_estimado}. Sem markdown adicional.`;
-                    const resText = await chamarGeminiAPI(prompt, inlineImg);
-                    return resText;
-                } else {
-                    const prompt = `${systemContext}\nResponda de forma amigável, direta e motivadora à pergunta do usuário:\n"${perguntaUsuario}"`;
-                    const resText = await chamarGeminiAPI(prompt);
-                    return resText || "Desculpe, não consegui processar sua dúvida no momento.";
-                }
-            } catch (e) {
-                console.error("Erro Gemini:", e);
-                return "Ocorreu um erro ao consultar o Coach Fit. Verifique sua conexão.";
-            }
-        }
-
         function getFormattedDate(d = new Date()) {
             const year = d.getFullYear();
             const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -813,7 +674,6 @@
             try {
                 const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
                 await setDoc(docRef, { ...userProfile }, { merge: true });
-                showAlert("Sucesso", "Perfil físico salvo com sucesso!");
             } catch (e) { console.error(e); }
         }
 
@@ -1214,15 +1074,13 @@
                 today: document.getElementById('view-today'), 
                 activities: document.getElementById('view-activities'), 
                 calendar: document.getElementById('view-calendar'), 
-                weight: document.getElementById('view-weight'),
-                coach: document.getElementById('view-coach')
+                weight: document.getElementById('view-weight')
             };
             const navs = { 
                 today: document.getElementById('nav-today'), 
                 activities: document.getElementById('nav-activities'), 
                 calendar: document.getElementById('nav-calendar'), 
-                weight: document.getElementById('nav-weight'),
-                coach: document.getElementById('nav-coach')
+                weight: document.getElementById('nav-weight')
             };
 
             function switchNav(active) {
@@ -1235,94 +1093,6 @@
                 if(active === 'calendar') renderCalendar();
             }
             Object.keys(navs).forEach(k => navs[k].onclick = () => switchNav(k));
-
-            // Chat Coach & Quick Prompts Logic
-            const chatInput = document.getElementById('chat-input');
-            const btnSendChat = document.getElementById('btn-send-chat');
-            const chatMessages = document.getElementById('chat-messages');
-
-            async function handleSendMessage(textCustom = null) {
-                const text = textCustom || chatInput.value.trim();
-                if (!text) return;
-                if (!textCustom) chatInput.value = '';
-
-                chatMessages.innerHTML += `
-                    <div class="bg-slate-100 rounded-2xl p-3.5 text-slate-800 text-xs font-medium ml-6">
-                        <span class="font-black text-slate-900 block mb-1">Você</span>
-                        ${text}
-                    </div>
-                `;
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                const typingId = 'typing_' + Date.now();
-                chatMessages.innerHTML += `
-                    <div id="${typingId}" class="bg-orange-50 border border-orange-100 rounded-2xl p-3.5 text-slate-500 text-xs font-medium mr-6 italic">
-                        Coach Fit está pensando...
-                    </div>
-                `;
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                const reply = await perguntarCoachFit(text);
-                document.getElementById(typingId).remove();
-
-                chatMessages.innerHTML += `
-                    <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-slate-800 text-xs font-medium mr-6">
-                        <span class="font-black text-[#FC4C02] block mb-1">Coach Fit ⚡</span>
-                        ${reply}
-                    </div>
-                `;
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            window.sendQuickPrompt = (txt) => {
-                switchNav('coach');
-                handleSendMessage(txt);
-            };
-
-            btnSendChat.onclick = () => handleSendMessage();
-            chatInput.onkeydown = (e) => { if (e.key === 'Enter') handleSendMessage(); };
-
-            // Meal Photo Scanner Logic
-            let scannedMealData = null;
-            const mealPhotoInput = document.getElementById('meal-photo-input');
-            mealPhotoInput.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                document.getElementById('photo-label-text').innerText = file.name;
-
-                const reader = new FileReader();
-                reader.onload = async () => {
-                    const base64Full = reader.result;
-                    const base64Data = base64Full.split(',')[1];
-                    const mimeType = file.type || "image/jpeg";
-
-                    document.getElementById('scan-result-container').classList.remove('hidden');
-                    document.getElementById('scanned-foods-text').innerText = "Analisando foto com Gemini Vision...";
-                    document.getElementById('scanned-cals-badge').innerText = "...";
-
-                    const replyJsonStr = await perguntarCoachFit(null, { mimeType, data: base64Data });
-                    try {
-                        let cleanJson = replyJsonStr.replace(/```json/g, '').replace(/```/g, '').trim();
-                        scannedMealData = JSON.parse(cleanJson);
-                        document.getElementById('scanned-foods-text').innerText = `Alimentos detectados: ${scannedMealData.alimentos}`;
-                        document.getElementById('scanned-cals-badge').innerText = `${scannedMealData.calorias} kcal`;
-                    } catch (err) {
-                        document.getElementById('scanned-foods-text').innerText = replyJsonStr || "Não foi possível estimar com precisão.";
-                        document.getElementById('scanned-cals-badge').innerText = "350 kcal";
-                        scannedMealData = { alimentos: "Refeição Escaneada", calorias: 350 };
-                    }
-                };
-                reader.readAsDataURL(file);
-            };
-
-            document.getElementById('btn-add-scanned-food').onclick = () => {
-                if (!scannedMealData) return;
-                addFoodToDB('📸 ' + scannedMealData.alimentos, scannedMealData.calorias);
-                showAlert("Sucesso", "Refeição escaneada e adicionada ao seu diário!");
-                document.getElementById('scan-result-container').classList.add('hidden');
-                document.getElementById('photo-label-text').innerText = "Selecionar Foto do Prato";
-                switchNav('today');
-            };
 
             document.getElementById('cal-prev-month').onclick = () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderCalendar(); };
             document.getElementById('cal-next-month').onclick = () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderCalendar(); };
@@ -1343,14 +1113,21 @@
             document.getElementById('goal-btn-cancel').onclick = () => hideModalEl('goal-modal', 'goal-modal-content');
             document.getElementById('goal-btn-confirm').onclick = () => { let newGoal = parseInt(document.getElementById('goal-modal-input').value); if (isNaN(newGoal) || newGoal <= 0) return showAlert("Aviso", "Insira uma meta maior que zero."); saveGoalToDB(newGoal); hideModalEl('goal-modal', 'goal-modal-content'); };
 
-            document.getElementById('btn-save-weight').onclick = () => { const w = document.getElementById('weight-input').value; const d = document.getElementById('weight-date-input').value; if (!w || !d) return showAlert("Aviso", "Preencha peso e data."); addWeightToDB(w, d); document.getElementById('weight-input').value = ''; };
-
-            document.getElementById('btn-save-profile').onclick = () => {
+            document.getElementById('btn-save-biometry').onclick = () => {
                 const age = document.getElementById('profile-age').value;
                 const height = document.getElementById('profile-height').value;
                 const sex = document.getElementById('profile-sex').value;
-                if (!age || !height) return showAlert("Aviso", "Preencha idade e altura.");
+                const w = document.getElementById('weight-input').value;
+                const d = document.getElementById('weight-date-input').value;
+
+                if (!age || !height) return showAlert("Aviso", "Preencha idade e altura para o perfil.");
                 saveProfileToDB(age, height, sex);
+
+                if (w && d) {
+                    addWeightToDB(w, d);
+                    document.getElementById('weight-input').value = '';
+                }
+                showAlert("Sucesso", "Informações e perfil salvos com sucesso!");
             };
 
             document.getElementById('btn-save-measurements').onclick = () => {
