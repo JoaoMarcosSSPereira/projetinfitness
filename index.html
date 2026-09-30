@@ -49,7 +49,6 @@
 
     <div class="w-full max-w-md bg-white min-h-screen relative shadow-2xl overflow-hidden flex flex-col border-x border-slate-100">
         
-        <!-- HEADER -->
         <header class="bg-white/90 backdrop-blur-md px-6 py-4 sticky top-0 z-20 border-b border-slate-100 flex justify-between items-center">
             <div class="flex items-center gap-2.5">
                 <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#FC4C02] to-amber-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/30 font-black text-lg">
@@ -67,7 +66,6 @@
             </div>
         </header>
 
-        <!-- MAIN VIEWS -->
         <main class="flex-1 overflow-y-auto no-scrollbar p-5 space-y-6 bg-slate-50/50">
             
             <!-- VIEW: TODAY -->
@@ -274,19 +272,54 @@
                 <div class="bg-gradient-to-br from-[#121214] via-[#1a1a1e] to-[#2b2b30] rounded-[2.5rem] p-6 text-white shadow-xl strava-glow relative overflow-hidden">
                     <div class="relative z-10">
                         <span class="text-orange-400 text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
-                            ⚖️ Acompanhamento de Peso
+                            ⚖️ Análise Corporal & Biometria
                         </span>
-                        <div class="flex items-baseline gap-2 mt-2">
-                            <span class="text-5xl font-black tracking-tight text-orange-400" id="current-weight-display">--</span>
-                            <span class="text-slate-400 font-bold text-xl">kg</span>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div class="bg-white/5 backdrop-blur-md p-3.5 rounded-2xl border border-white/10">
+                                <span class="text-[10px] uppercase font-black tracking-wider text-slate-400 block">IMC Atual</span>
+                                <div class="flex items-baseline gap-1 mt-0.5">
+                                    <span class="text-2xl font-black tracking-tight text-white" id="display-imc">--</span>
+                                    <span class="text-slate-400 font-bold text-xs" id="display-imc-status"></span>
+                                </div>
+                            </div>
+                            <div class="bg-white/5 backdrop-blur-md p-3.5 rounded-2xl border border-white/10">
+                                <span class="text-[10px] uppercase font-black tracking-wider text-orange-400 block">Gasto Basal (TMB)</span>
+                                <div class="flex items-baseline gap-1 mt-0.5">
+                                    <span class="text-2xl font-black tracking-tight text-orange-400" id="display-tmb">--</span>
+                                    <span class="text-slate-400 font-bold text-xs">kcal/dia</span>
+                                </div>
+                            </div>
                         </div>
-                        <p class="text-xs text-slate-400 mt-2 font-semibold" id="weight-diff-display">Cadastre seu peso para ver a evolução</p>
+                        <p class="text-xs text-slate-400 mt-3 font-semibold" id="weight-diff-display">Cadastre seu perfil e peso para ver a evolução</p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 space-y-4">
-                    <h3 class="font-black text-slate-900 text-base">Registrar Novo Peso</h3>
-                    <div class="grid grid-cols-2 gap-3">
+                <!-- UNIFIED BIOMETRY & WEIGHT CARD -->
+                <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 space-y-5">
+                    <div>
+                        <h3 class="font-black text-slate-900 text-base">Biometria & Peso</h3>
+                        <p class="text-xs text-slate-400 font-semibold mt-0.5">Atualize seus dados corporais e peso atual</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-black text-slate-600 ml-1 uppercase">Idade</label>
+                            <input type="number" id="profile-age" placeholder="Ex: 28" class="w-full px-3 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-sm font-medium text-center">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-black text-slate-600 ml-1 uppercase">Altura (cm)</label>
+                            <input type="number" id="profile-height" placeholder="Ex: 175" class="w-full px-3 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-sm font-medium text-center">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-black text-slate-600 ml-1 uppercase">Sexo</label>
+                            <select id="profile-sex" class="w-full px-2 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-xs font-bold text-center">
+                                <option value="male">Masculino</option>
+                                <option value="female">Feminino</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100">
                         <div class="space-y-1.5">
                             <label class="text-xs font-black text-slate-600 ml-1 uppercase">Peso (kg)</label>
                             <input type="number" step="0.1" id="weight-input" placeholder="Ex: 74.5" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-sm font-medium">
@@ -296,12 +329,52 @@
                             <input type="date" id="weight-date-input" class="w-full px-3 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-xs font-medium">
                         </div>
                     </div>
-                    <button id="btn-save-weight" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-4 rounded-2xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 cursor-pointer">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        Salvar Peso
+
+                    <div class="flex gap-2 pt-1">
+                        <button id="btn-save-profile" class="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-black py-3.5 rounded-2xl transition-all text-xs flex justify-center items-center gap-1 shadow-md cursor-pointer">
+                            Salvar Perfil
+                        </button>
+                        <button id="btn-save-weight" class="flex-1 bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-3.5 rounded-2xl transition-all text-xs flex justify-center items-center gap-1 shadow-lg shadow-orange-500/30 cursor-pointer">
+                            Salvar Peso
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MEDIDAS CORPORAIS -->
+                <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 space-y-4">
+                    <h3 class="font-black text-slate-900 text-base">Medidas Corporais (cm)</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black text-slate-600 ml-1 uppercase">Abdômen</label>
+                            <input type="number" step="0.1" id="meas-abdomen" placeholder="cm" class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black text-slate-600 ml-1 uppercase">Cintura</label>
+                            <input type="number" step="0.1" id="meas-waist" placeholder="cm" class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black text-slate-600 ml-1 uppercase">Peitoral</label>
+                            <input type="number" step="0.1" id="meas-chest" placeholder="cm" class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black text-slate-600 ml-1 uppercase">Braços</label>
+                            <input type="number" step="0.1" id="meas-arms" placeholder="cm" class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black text-slate-600 ml-1 uppercase">Coxas</label>
+                            <input type="number" step="0.1" id="meas-thighs" placeholder="cm" class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black text-slate-600 ml-1 uppercase">Quadril</label>
+                            <input type="number" step="0.1" id="meas-hips" placeholder="cm" class="w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium">
+                        </div>
+                    </div>
+                    <button id="btn-save-measurements" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-3.5 rounded-2xl transition-all text-xs flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 cursor-pointer">
+                        Salvar Medidas
                     </button>
                 </div>
 
+                <!-- HISTÓRICO DE PESO -->
                 <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100">
                     <h3 class="font-black text-slate-900 text-base mb-4">Histórico de Peso</h3>
                     <div id="weight-empty-state" class="text-center py-8 text-slate-400 text-xs font-semibold">
@@ -309,11 +382,101 @@
                     </div>
                     <ul id="weight-history-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></ul>
                 </div>
+
+                <!-- HISTÓRICO DE MEDIDAS -->
+                <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100">
+                    <h3 class="font-black text-slate-900 text-base mb-4">Histórico de Medidas</h3>
+                    <div id="measurements-empty-state" class="text-center py-8 text-slate-400 text-xs font-semibold">
+                        Nenhuma medida registrada.
+                    </div>
+                    <ul id="measurements-history-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></ul>
+                </div>
+            </div>
+
+            <!-- VIEW: COACH IA -->
+            <div id="view-coach" class="hidden space-y-6 animate-fade-in pb-8">
+                <div class="bg-gradient-to-br from-[#121214] via-[#1a1a1e] to-[#2b2b30] rounded-[2.5rem] p-6 text-white shadow-xl strava-glow relative overflow-hidden">
+                    <div class="relative z-10 flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-[#FC4C02] flex items-center justify-center text-white text-2xl shadow-lg">
+                            🤖
+                        </div>
+                        <div>
+                            <span class="text-orange-400 text-xs font-black uppercase tracking-widest block">Inteligência Artificial</span>
+                            <h2 class="text-xl font-black text-white">Coach Fit AI</h2>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-3 font-semibold relative z-10">
+                        Pergunte sobre receitas, tire foto do seu prato ou peça dicas de treino baseadas no seu saldo calórico!
+                    </p>
+                </div>
+
+                <!-- SCANNER DE PRATOS POR FOTO (VISÃO COMPUTACIONAL) -->
+                <div class="bg-white rounded-[2.5rem] p-5 shadow-sm border border-slate-100 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">📸</span>
+                            <h3 class="font-black text-slate-900 text-sm">Scanner de Prato por Foto</h3>
+                        </div>
+                        <span class="text-[10px] bg-orange-50 text-[#FC4C02] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">Gemini Vision</span>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Tire ou envie a foto de sua refeição para a IA estimar as calorias e alimentos.</p>
+                    
+                    <div class="flex items-center gap-3">
+                        <label class="flex-1 border-2 border-dashed border-slate-200 hover:border-[#FC4C02] bg-slate-50 hover:bg-orange-50/50 rounded-2xl p-4 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-1">
+                            <svg class="w-6 h-6 text-[#FC4C02]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812-1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span class="text-xs font-bold text-slate-700" id="photo-label-text">Selecionar Foto do Prato</span>
+                            <input type="file" id="meal-photo-input" accept="image/*" class="hidden">
+                        </label>
+                    </div>
+
+                    <div id="scan-result-container" class="hidden bg-orange-50 border border-orange-100 rounded-2xl p-4 space-y-3 animate-fade-in">
+                        <div class="flex justify-between items-center">
+                            <span class="font-black text-xs text-[#FC4C02] uppercase tracking-wider">Resultado da Análise</span>
+                            <span id="scanned-cals-badge" class="font-black text-sm text-[#FC4C02] bg-white px-3 py-0.5 rounded-full shadow-sm">0 kcal</span>
+                        </div>
+                        <p id="scanned-foods-text" class="text-xs font-medium text-slate-800"></p>
+                        <button id="btn-add-scanned-food" class="w-full bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white font-black py-3 rounded-xl text-xs transition-all shadow-md shadow-orange-500/30 cursor-pointer">
+                            + Adicionar ao Diário de Hoje
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUGESTÕES RÁPIDAS (CHIPS) -->
+                <div class="space-y-2">
+                    <span class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Sugestões Rápidas</span>
+                    <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                        <button onclick="sendQuickPrompt('O que posso jantar com as calorias que me restam hoje?')" class="bg-white hover:bg-orange-50 hover:border-orange-200 border border-slate-100 text-slate-700 hover:text-[#FC4C02] px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap shadow-sm transition-all cursor-pointer">
+                            🍽️ O que jantar hoje?
+                        </button>
+                        <button onclick="sendQuickPrompt('Me sugira uma receita rápida e proteica para o pós-treino.')" class="bg-white hover:bg-orange-50 hover:border-orange-200 border border-slate-100 text-slate-700 hover:text-[#FC4C02] px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap shadow-sm transition-all cursor-pointer">
+                            🍳 Receita Proteica
+                        </button>
+                        <button onclick="sendQuickPrompt('Faça uma avaliação motivacional do meu progresso e dieta atual.')" class="bg-white hover:bg-orange-50 hover:border-orange-200 border border-slate-100 text-slate-700 hover:text-[#FC4C02] px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap shadow-sm transition-all cursor-pointer">
+                            📊 Avaliar meu dia
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CHAT CONTAINER -->
+                <div class="bg-white rounded-[2.5rem] p-5 shadow-sm border border-slate-100 flex flex-col h-[380px]">
+                    <div id="chat-messages" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm pb-2">
+                        <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-slate-800 text-xs font-medium">
+                            <span class="font-black text-[#FC4C02] block mb-1">Coach Fit ⚡</span>
+                            Olá! Sou seu assistente de nutrição e performance. Pergunte o que quiser ou envie uma foto do seu prato acima!
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex gap-2">
+                        <input type="text" id="chat-input" placeholder="Ex: O que posso jantar com as calorias que restam?" class="flex-1 px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FC4C02]/50 text-xs font-medium">
+                        <button id="btn-send-chat" class="bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 text-white px-5 rounded-2xl transition-all font-black text-xs shadow-md shadow-orange-500/30 cursor-pointer flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </main>
 
         <!-- NAVIGATION BAR -->
-        <nav class="bg-white/95 backdrop-blur-md border-t border-slate-100 py-3 px-6 fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto flex justify-around items-center shadow-2xl">
+        <nav class="bg-white/95 backdrop-blur-md border-t border-slate-100 py-3 px-4 fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto flex justify-around items-center shadow-2xl">
             <button id="nav-today" class="flex flex-col items-center gap-1 text-[#FC4C02] transition-all font-black text-xs group cursor-pointer">
                 <div class="p-1.5 rounded-xl bg-orange-50 group-hover:scale-110 transition-transform">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -337,6 +500,12 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
                 </div>
                 <span>Peso</span>
+            </button>
+            <button id="nav-coach" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 transition-all font-semibold text-xs group cursor-pointer">
+                <div class="p-1.5 rounded-xl group-hover:bg-slate-100 group-hover:scale-110 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 4.206c.323.97-.417 1.994-1.433 1.994H4.231c-1.016 0-1.756-1.024-1.433-1.994L4.2 15.3"/></svg>
+                </div>
+                <span>Coach IA</span>
             </button>
         </nav>
     </div>
@@ -386,27 +555,25 @@
     <!-- MODAL: ALERT -->
     <div id="alert-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center px-4 backdrop-blur-sm transition-opacity opacity-0">
         <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-6 shadow-2xl transform scale-95 transition-transform duration-300" id="alert-modal-content">
-            <div class="w-14 h-14 bg-red-100 rounded-3xl flex items-center justify-center mb-4 text-red-500 mx-auto shadow-sm" id="alert-icon-container">
+            <div class="w-14 h-14 bg-orange-100 rounded-3xl flex items-center justify-center mb-4 text-[#FC4C02] mx-auto shadow-sm" id="alert-icon-container">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
             <h3 class="text-lg font-black text-slate-900 mb-1 text-center" id="alert-title">Aviso</h3>
             <p class="text-slate-500 text-xs font-semibold mb-6 text-center" id="alert-message">Mensagem aqui</p>
             <div class="flex gap-3" id="alert-actions">
                 <button id="alert-btn-cancel" class="flex-1 py-3.5 rounded-2xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all cursor-pointer">Cancelar</button>
-                <button id="alert-btn-confirm" class="flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-red-500 hover:bg-red-600 active:scale-95 shadow-lg shadow-red-500/30 transition-all cursor-pointer">Confirmar</button>
+                <button id="alert-btn-confirm" class="flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 shadow-lg shadow-orange-500/30 transition-all cursor-pointer">Confirmar</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CAMINHO FIXO E ESTÁVEL PARA O BANCO DE DADOS NÃO PERDER OS DADOS AO ATUALIZAR
         const appId = 'projetin-fitness-db-oficial';
         
-        // RECUPERA OU CRIA UM USER ID PERMANENTE NO NAVEGADOR
         let userId = localStorage.getItem('projetin_fitness_user_id');
         if (!userId) {
             userId = 'user_' + Math.random().toString(36).substr(2, 9);
@@ -428,12 +595,13 @@
         let isOnline = false;
         let allConsumedItems = []; 
         let allWeightItems = [];
+        let allMeasurementItems = [];
         let allActivityItems = [];
         let dailyGoal = 2000; 
+        let userProfile = { age: '', height: '', sex: 'male' };
         let currentCalendarDate = new Date();
         let currentCategoryFilter = 'all';
 
-        // SVGs Detalhados
         const svgIcons = {
             meat: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-8 8c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm4 2l-6.41 6.41a2 2 0 01-2.82 0l-1.18-1.18a2 2 0 010-2.82L10 14"/></svg>`,
             chicken: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4C6.5 4 4 7 4 11s3 8 7.5 8c2 0 4.5-1 6.5-3l1.5-2a2 2 0 00-1-3l-2-1a2 2 0 01-1-2c0-1.5-1.5-3-3.5-3z"/></svg>`,
@@ -451,9 +619,7 @@
             requeijao: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 8h12l-1 12H7L6 8zM9 4h6v4H9z"/></svg>`
         };
 
-        // LISTA EXATA DE 10 PROTEÍNAS, 10 CARBOIDRATOS, 10 FRUTAS, PÃES, MANTEIGA E REQUEIJÃO
         const predefinedFoods = [
-            // --- 10 PROTEÍNAS ---
             { name: 'Peito de Frango', cals: 165, type: 'weight', category: 'protein', iconKey: 'chicken' },
             { name: 'Carne Bovina Magra', cals: 210, type: 'weight', category: 'protein', iconKey: 'meat' },
             { name: 'Patinho Moído', cals: 220, type: 'weight', category: 'protein', iconKey: 'meat' },
@@ -465,7 +631,6 @@
             { name: 'Queijo Mussarela', cals: 300, type: 'weight', category: 'protein', iconKey: 'cheese' },
             { name: 'Iogurte Grego Proteico', cals: 90, type: 'weight', category: 'protein', iconKey: 'cheese' },
 
-            // --- 10 CARBOIDRATOS ---
             { name: 'Arroz Branco', cals: 130, type: 'weight', category: 'carb', iconKey: 'rice' },
             { name: 'Arroz Integral', cals: 124, type: 'weight', category: 'carb', iconKey: 'rice' },
             { name: 'Feijão Carioca / Preto', cals: 90, type: 'weight', category: 'carb', iconKey: 'beans' },
@@ -477,7 +642,6 @@
             { name: 'Cuscuz de Milho', cals: 112, type: 'weight', category: 'carb', iconKey: 'rice' },
             { name: 'Tapioca (Goma)', cals: 238, type: 'weight', category: 'carb', iconKey: 'rice' },
 
-            // --- 10 FRUTAS ---
             { name: 'Banana Prata / Nanica', cals: 90, type: 'unit', category: 'fruit', iconKey: 'fruit' },
             { name: 'Maçã', cals: 72, type: 'unit', category: 'fruit', iconKey: 'fruit' },
             { name: 'Mamão Papaya (100g)', cals: 43, type: 'weight', category: 'fruit', iconKey: 'fruit' },
@@ -489,7 +653,6 @@
             { name: 'Uva (100g)', cals: 67, type: 'weight', category: 'fruit', iconKey: 'fruit' },
             { name: 'Abacaxi (100g)', cals: 50, type: 'weight', category: 'fruit', iconKey: 'fruit' },
 
-            // --- PÃES, MANTEIGA E REQUEIJÃO ---
             { name: 'Pão Francês', cals: 135, type: 'unit', category: 'others', iconKey: 'bread' },
             { name: 'Pão Integral de Forma', cals: 65, type: 'unit', category: 'others', iconKey: 'bread' },
             { name: 'Manteiga (1 colher)', cals: 75, type: 'weight', category: 'others', iconKey: 'butter' },
@@ -503,6 +666,53 @@
             { name: 'Musculação', baseBurnPerMin: 5.5, kmBurn: 0, icon: '🏋' }
         ];
 
+        const GEMINI_API_KEY = "AQ.Ab8RN6KCR-bxE0wYMNIpAzcOtOsai0B2UlSH688BGctF5_E3Rw";
+
+        async function chamarGeminiAPI(promptText, inlineDataObj = null) {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            const parts = [];
+            if (inlineDataObj) parts.push({ inlineData: inlineDataObj });
+            parts.push({ text: promptText });
+
+            const payload = { contents: [{ parts }] };
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            return data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+        }
+
+        async function perguntarCoachFit(perguntaUsuario, inlineImg = null) {
+            const todayStr = getFormattedDate();
+            const todayItems = allConsumedItems.filter(i => i.date === todayStr);
+            const totalConsumed = todayItems.reduce((acc, curr) => acc + curr.calories, 0);
+            const todayActivities = allActivityItems.filter(i => i.date === todayStr);
+            const totalBurned = todayActivities.reduce((acc, curr) => acc + curr.calories, 0);
+            const remaining = dailyGoal + totalBurned - totalConsumed;
+
+            const systemContext = `
+                Você é o "Coach Fit", assistente motivacional e nutricional do Projetin Fitness.
+                Meta diária: ${dailyGoal} kcal. Consumido hoje: ${totalConsumed} kcal. Queimado em treinos: ${totalBurned} kcal. Restantes: ${remaining} kcal.
+            `;
+
+            try {
+                if (inlineImg) {
+                    const prompt = `${systemContext}\nAnalise esta foto de refeição. Liste os alimentos identificados e retorne obrigatoriamente um JSON válido no formato exato: {"alimentos": "descrição curta", "calorias": número_inteiro_estimado}. Sem markdown adicional.`;
+                    const resText = await chamarGeminiAPI(prompt, inlineImg);
+                    return resText;
+                } else {
+                    const prompt = `${systemContext}\nResponda de forma amigável, direta e motivadora à pergunta do usuário:\n"${perguntaUsuario}"`;
+                    const resText = await chamarGeminiAPI(prompt);
+                    return resText || "Desculpe, não consegui processar sua dúvida no momento.";
+                }
+            } catch (e) {
+                console.error("Erro Gemini:", e);
+                return "Ocorreu um erro ao consultar o Coach Fit. Verifique sua conexão.";
+            }
+        }
+
         function getFormattedDate(d = new Date()) {
             const year = d.getFullYear();
             const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -515,19 +725,12 @@
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-
-                try {
-                    await signInAnonymously(auth);
-                } catch (authError) {
-                    console.log("Modo de autenticação fallback ativo");
-                }
-
+                try { await signInAnonymously(auth); } catch (e) {}
                 isOnline = true;
                 updateOnlineStatus(true);
-                
                 await loadGoalFromDB();
+                await loadProfileFromDB();
                 setupSnapshots();
-
             } catch (error) {
                 isOnline = false;
                 updateOnlineStatus(false);
@@ -548,43 +751,142 @@
 
         function getFoodRef() { return collection(db, 'artifacts', appId, 'users', userId, 'foods'); }
         function getWeightRef() { return collection(db, 'artifacts', appId, 'users', userId, 'weights'); }
+        function getMeasurementRef() { return collection(db, 'artifacts', appId, 'users', userId, 'measurements'); }
         function getActivityRef() { return collection(db, 'artifacts', appId, 'users', userId, 'activities'); }
 
         function setupSnapshots() {
             if (!db) return;
-            
-            // ESCUTA ALIMENTOS EM TEMPO REAL
             onSnapshot(query(getFoodRef()), (snapshot) => {
                 allConsumedItems = [];
-                snapshot.forEach((doc) => {
-                    allConsumedItems.push({ id: doc.id, ...doc.data() });
-                });
+                snapshot.forEach((doc) => { allConsumedItems.push({ id: doc.id, ...doc.data() }); });
                 allConsumedItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderTodayList();
                 renderCalendar();
-            }, (err) => console.error("Erro snapshot alimentos:", err));
-
-            // ESCUTA PESOS EM TEMPO REAL
+            });
             onSnapshot(query(getWeightRef()), (snapshot) => {
                 allWeightItems = [];
-                snapshot.forEach((doc) => {
-                    allWeightItems.push({ id: doc.id, ...doc.data() });
-                });
+                snapshot.forEach((doc) => { allWeightItems.push({ id: doc.id, ...doc.data() }); });
                 allWeightItems.sort((a, b) => new Date(b.date) - new Date(a.date));
                 renderWeightList();
-            }, (err) => console.error("Erro snapshot pesos:", err));
-
-            // ESCUTA ATIVIDADES EM TEMPO REAL
+                calculateIMCAndTMB();
+            });
+            onSnapshot(query(getMeasurementRef()), (snapshot) => {
+                allMeasurementItems = [];
+                snapshot.forEach((doc) => { allMeasurementItems.push({ id: doc.id, ...doc.data() }); });
+                allMeasurementItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+                renderMeasurementList();
+            });
             onSnapshot(query(getActivityRef()), (snapshot) => {
                 allActivityItems = [];
-                snapshot.forEach((doc) => {
-                    allActivityItems.push({ id: doc.id, ...doc.data() });
-                });
+                snapshot.forEach((doc) => { allActivityItems.push({ id: doc.id, ...doc.data() }); });
                 allActivityItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderActivityList();
                 renderTodayList();
-            }, (err) => console.error("Erro snapshot atividades:", err));
+            });
         }
+
+        async function loadProfileFromDB() {
+            if (!db) return;
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.dailyGoal) dailyGoal = data.dailyGoal;
+                    if (data.age) userProfile.age = data.age;
+                    if (data.height) userProfile.height = data.height;
+                    if (data.sex) userProfile.sex = data.sex;
+                    document.getElementById('goal-display').innerText = dailyGoal;
+                    if (document.getElementById('profile-age')) document.getElementById('profile-age').value = userProfile.age || '';
+                    if (document.getElementById('profile-height')) document.getElementById('profile-height').value = userProfile.height || '';
+                    if (document.getElementById('profile-sex')) document.getElementById('profile-sex').value = userProfile.sex || 'male';
+                    renderTodayList();
+                    calculateIMCAndTMB();
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function saveProfileToDB(age, height, sex) {
+            userProfile = { age: Number(age), height: Number(height), sex };
+            calculateIMCAndTMB();
+            if (!db) return;
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
+                await setDoc(docRef, { ...userProfile }, { merge: true });
+                showAlert("Sucesso", "Perfil físico salvo com sucesso!");
+            } catch (e) { console.error(e); }
+        }
+
+        function calculateIMCAndTMB() {
+            const displayImc = document.getElementById('display-imc');
+            const displayStatus = document.getElementById('display-imc-status');
+            const displayTmb = document.getElementById('display-tmb');
+            if (!displayImc || !displayTmb) return;
+
+            if (allWeightItems.length === 0 || !userProfile.height || !userProfile.age) {
+                displayImc.innerText = '--';
+                displayStatus.innerText = '';
+                displayTmb.innerText = '--';
+                return;
+            }
+
+            const weight = allWeightItems[0].weight;
+            const heightM = userProfile.height / 100;
+            const imc = weight / (heightM * heightM);
+            displayImc.innerText = imc.toFixed(1);
+            let status = '';
+            if (imc < 18.5) status = '(Abaixo do peso)';
+            else if (imc < 25) status = '(Peso normal)';
+            else if (imc < 30) status = '(Sobrepeso)';
+            else status = '(Obesidade)';
+            displayStatus.innerText = status;
+
+            let tmb = (10 * weight) + (6.25 * userProfile.height) - (5 * userProfile.age);
+            if (userProfile.sex === 'male') tmb += 5;
+            else tmb -= 161;
+            displayTmb.innerText = Math.round(tmb);
+        }
+
+        async function addMeasurementToDB(data) {
+            const record = { ...data, date: getFormattedDate(), timestamp: Date.now() };
+            try { await addDoc(getMeasurementRef(), record); showAlert("Sucesso", "Medidas corporais salvas!"); } catch (e) { console.error(e); }
+        }
+
+        async function deleteMeasurementFromDB(docId) {
+            try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'measurements', docId)); } catch (e) { console.error(e); }
+        }
+
+        function renderMeasurementList() {
+            const listEl = document.getElementById('measurements-history-list');
+            const emptyEl = document.getElementById('measurements-empty-state');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            if (allMeasurementItems.length === 0) { emptyEl.classList.remove('hidden'); return; }
+            emptyEl.classList.add('hidden');
+
+            allMeasurementItems.forEach(item => {
+                const parts = item.date.split('-');
+                let details = [];
+                if (item.abdomen) details.push(`Abd: ${item.abdomen}cm`);
+                if (item.waist) details.push(`Cint: ${item.waist}cm`);
+                if (item.chest) details.push(`Peito: ${item.chest}cm`);
+                if (item.arms) details.push(`Braço: ${item.arms}cm`);
+                if (item.thighs) details.push(`Coxa: ${item.thighs}cm`);
+                if (item.hips) details.push(`Quadril: ${item.hips}cm`);
+
+                listEl.innerHTML += `
+                    <li class="bg-slate-50 border border-slate-100 rounded-2xl p-3.5 flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-bold text-slate-800 text-sm">${parts[2]}/${parts[1]}/${parts[0]}</span>
+                            <div class="text-slate-500 font-semibold mt-1">${details.join(' • ')}</div>
+                        </div>
+                        <button class="text-slate-300 hover:text-rose-500 bg-white hover:bg-rose-50 p-2 rounded-xl transition-all cursor-pointer" onclick="deleteMeasurement('${item.id}')">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </li>`;
+            });
+        }
+        window.deleteMeasurement = (id) => showAlert("Remover Medidas", "Deseja remover este registro?", () => deleteMeasurementFromDB(id));
 
         async function loadGoalFromDB() {
             if (!db) return;
@@ -602,7 +904,7 @@
         async function saveGoalToDB(newGoal) {
             dailyGoal = newGoal;
             document.getElementById('goal-display').innerText = dailyGoal;
-            renderTodayList(); 
+            renderTodayList();
             if (!db) return;
             try {
                 const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
@@ -651,7 +953,6 @@
         function renderPredefined() {
             const container = document.getElementById('predefined-foods-container');
             container.innerHTML = '';
-            
             const filtered = currentCategoryFilter === 'all' 
                 ? predefinedFoods 
                 : predefinedFoods.filter(f => f.category === currentCategoryFilter);
@@ -846,14 +1147,12 @@
             listEl.innerHTML = '';
             if (allWeightItems.length === 0) {
                 document.getElementById('weight-empty-state').classList.remove('hidden');
-                document.getElementById('current-weight-display').innerText = '--';
                 document.getElementById('weight-diff-display').innerText = 'Cadastre seu peso'; return;
             }
             document.getElementById('weight-empty-state').classList.add('hidden');
             const latest = allWeightItems[0];
             const oldest = allWeightItems[allWeightItems.length - 1];
             
-            document.getElementById('current-weight-display').innerText = latest.weight.toFixed(1);
             if (allWeightItems.length > 1) {
                 const diff = latest.weight - oldest.weight;
                 document.getElementById('weight-diff-display').innerText = `Diferença total: ${diff > 0 ? '+' : ''}${diff.toFixed(1)} kg`;
@@ -877,15 +1176,8 @@
         function showAlert(title, message, confirmCallback = null) {
             document.getElementById('alert-title').innerText = title; document.getElementById('alert-message').innerText = message;
             currentAlertCallback = confirmCallback;
-            const btnCancel = document.getElementById('alert-btn-cancel'); const iconContainer = document.getElementById('alert-icon-container');
+            const btnCancel = document.getElementById('alert-btn-cancel');
 
-            if (title.includes('Erro') || title.includes('Aviso') || title.includes('Remover')) {
-                iconContainer.className = "w-14 h-14 bg-red-100 rounded-3xl flex items-center justify-center mb-4 text-red-500 mx-auto shadow-sm";
-                document.getElementById('alert-btn-confirm').className = "flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-red-500 hover:bg-red-600 active:scale-95 transition-all cursor-pointer";
-            } else {
-                iconContainer.className = "w-14 h-14 bg-orange-100 rounded-3xl flex items-center justify-center mb-4 text-[#FC4C02] mx-auto shadow-sm";
-                document.getElementById('alert-btn-confirm').className = "flex-1 py-3.5 rounded-2xl text-sm font-black text-white bg-[#FC4C02] hover:bg-[#E34302] active:scale-95 transition-all cursor-pointer";
-            }
             if (confirmCallback) { btnCancel.classList.remove('hidden'); document.getElementById('alert-btn-confirm').innerText = "Confirmar"; } 
             else { btnCancel.classList.add('hidden'); document.getElementById('alert-btn-confirm').innerText = "OK"; }
             showModalEl('alert-modal', 'alert-modal-content');
@@ -916,11 +1208,22 @@
             document.getElementById('weight-date-input').value = getFormattedDate();
 
             renderPredefined(); renderActivitySelectOptions();
-            
             initFirebase();
 
-            const views = { today: document.getElementById('view-today'), activities: document.getElementById('view-activities'), calendar: document.getElementById('view-calendar'), weight: document.getElementById('view-weight') };
-            const navs = { today: document.getElementById('nav-today'), activities: document.getElementById('nav-activities'), calendar: document.getElementById('nav-calendar'), weight: document.getElementById('nav-weight') };
+            const views = { 
+                today: document.getElementById('view-today'), 
+                activities: document.getElementById('view-activities'), 
+                calendar: document.getElementById('view-calendar'), 
+                weight: document.getElementById('view-weight'),
+                coach: document.getElementById('view-coach')
+            };
+            const navs = { 
+                today: document.getElementById('nav-today'), 
+                activities: document.getElementById('nav-activities'), 
+                calendar: document.getElementById('nav-calendar'), 
+                weight: document.getElementById('nav-weight'),
+                coach: document.getElementById('nav-coach')
+            };
 
             function switchNav(active) {
                 Object.values(views).forEach(v => v.classList.add('hidden'));
@@ -932,6 +1235,94 @@
                 if(active === 'calendar') renderCalendar();
             }
             Object.keys(navs).forEach(k => navs[k].onclick = () => switchNav(k));
+
+            // Chat Coach & Quick Prompts Logic
+            const chatInput = document.getElementById('chat-input');
+            const btnSendChat = document.getElementById('btn-send-chat');
+            const chatMessages = document.getElementById('chat-messages');
+
+            async function handleSendMessage(textCustom = null) {
+                const text = textCustom || chatInput.value.trim();
+                if (!text) return;
+                if (!textCustom) chatInput.value = '';
+
+                chatMessages.innerHTML += `
+                    <div class="bg-slate-100 rounded-2xl p-3.5 text-slate-800 text-xs font-medium ml-6">
+                        <span class="font-black text-slate-900 block mb-1">Você</span>
+                        ${text}
+                    </div>
+                `;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                const typingId = 'typing_' + Date.now();
+                chatMessages.innerHTML += `
+                    <div id="${typingId}" class="bg-orange-50 border border-orange-100 rounded-2xl p-3.5 text-slate-500 text-xs font-medium mr-6 italic">
+                        Coach Fit está pensando...
+                    </div>
+                `;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                const reply = await perguntarCoachFit(text);
+                document.getElementById(typingId).remove();
+
+                chatMessages.innerHTML += `
+                    <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-slate-800 text-xs font-medium mr-6">
+                        <span class="font-black text-[#FC4C02] block mb-1">Coach Fit ⚡</span>
+                        ${reply}
+                    </div>
+                `;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            window.sendQuickPrompt = (txt) => {
+                switchNav('coach');
+                handleSendMessage(txt);
+            };
+
+            btnSendChat.onclick = () => handleSendMessage();
+            chatInput.onkeydown = (e) => { if (e.key === 'Enter') handleSendMessage(); };
+
+            // Meal Photo Scanner Logic
+            let scannedMealData = null;
+            const mealPhotoInput = document.getElementById('meal-photo-input');
+            mealPhotoInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                document.getElementById('photo-label-text').innerText = file.name;
+
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    const base64Full = reader.result;
+                    const base64Data = base64Full.split(',')[1];
+                    const mimeType = file.type || "image/jpeg";
+
+                    document.getElementById('scan-result-container').classList.remove('hidden');
+                    document.getElementById('scanned-foods-text').innerText = "Analisando foto com Gemini Vision...";
+                    document.getElementById('scanned-cals-badge').innerText = "...";
+
+                    const replyJsonStr = await perguntarCoachFit(null, { mimeType, data: base64Data });
+                    try {
+                        let cleanJson = replyJsonStr.replace(/```json/g, '').replace(/```/g, '').trim();
+                        scannedMealData = JSON.parse(cleanJson);
+                        document.getElementById('scanned-foods-text').innerText = `Alimentos detectados: ${scannedMealData.alimentos}`;
+                        document.getElementById('scanned-cals-badge').innerText = `${scannedMealData.calorias} kcal`;
+                    } catch (err) {
+                        document.getElementById('scanned-foods-text').innerText = replyJsonStr || "Não foi possível estimar com precisão.";
+                        document.getElementById('scanned-cals-badge').innerText = "350 kcal";
+                        scannedMealData = { alimentos: "Refeição Escaneada", calorias: 350 };
+                    }
+                };
+                reader.readAsDataURL(file);
+            };
+
+            document.getElementById('btn-add-scanned-food').onclick = () => {
+                if (!scannedMealData) return;
+                addFoodToDB('📸 ' + scannedMealData.alimentos, scannedMealData.calorias);
+                showAlert("Sucesso", "Refeição escaneada e adicionada ao seu diário!");
+                document.getElementById('scan-result-container').classList.add('hidden');
+                document.getElementById('photo-label-text').innerText = "Selecionar Foto do Prato";
+                switchNav('today');
+            };
 
             document.getElementById('cal-prev-month').onclick = () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderCalendar(); };
             document.getElementById('cal-next-month').onclick = () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderCalendar(); };
@@ -953,6 +1344,28 @@
             document.getElementById('goal-btn-confirm').onclick = () => { let newGoal = parseInt(document.getElementById('goal-modal-input').value); if (isNaN(newGoal) || newGoal <= 0) return showAlert("Aviso", "Insira uma meta maior que zero."); saveGoalToDB(newGoal); hideModalEl('goal-modal', 'goal-modal-content'); };
 
             document.getElementById('btn-save-weight').onclick = () => { const w = document.getElementById('weight-input').value; const d = document.getElementById('weight-date-input').value; if (!w || !d) return showAlert("Aviso", "Preencha peso e data."); addWeightToDB(w, d); document.getElementById('weight-input').value = ''; };
+
+            document.getElementById('btn-save-profile').onclick = () => {
+                const age = document.getElementById('profile-age').value;
+                const height = document.getElementById('profile-height').value;
+                const sex = document.getElementById('profile-sex').value;
+                if (!age || !height) return showAlert("Aviso", "Preencha idade e altura.");
+                saveProfileToDB(age, height, sex);
+            };
+
+            document.getElementById('btn-save-measurements').onclick = () => {
+                const m = {
+                    abdomen: document.getElementById('meas-abdomen').value,
+                    waist: document.getElementById('meas-waist').value,
+                    chest: document.getElementById('meas-chest').value,
+                    arms: document.getElementById('meas-arms').value,
+                    thighs: document.getElementById('meas-thighs').value,
+                    hips: document.getElementById('meas-hips').value
+                };
+                if (!Object.values(m).some(v => v !== '')) return showAlert("Aviso", "Preencha pelo menos uma medida.");
+                addMeasurementToDB(m);
+                document.querySelectorAll('#view-weight input[id^="meas-"]').forEach(i => i.value = '');
+            };
 
             document.getElementById('btn-add-activity').onclick = () => {
                 const act = predefinedActivities[document.getElementById('activity-select').value];
