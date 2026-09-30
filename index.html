@@ -403,8 +403,16 @@
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'projetin-fitness-app';
+        // CAMINHO FIXO E ESTÁVEL PARA O BANCO DE DADOS NÃO PERDER OS DADOS AO ATUALIZAR
+        const appId = 'projetin-fitness-db-oficial';
         
+        // RECUPERA OU CRIA UM USER ID PERMANENTE NO NAVEGADOR
+        let userId = localStorage.getItem('projetin_fitness_user_id');
+        if (!userId) {
+            userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('projetin_fitness_user_id', userId);
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyDI6JBGwynq1ybkqhMxgD8xcxp4icU-1lQ",
             authDomain: "projetinfitness-1278c.firebaseapp.com",
@@ -416,7 +424,7 @@
             measurementId: "G-VRQMYCJPRB"
         };
 
-        let app, db, auth, userId;
+        let app, db, auth;
         let isOnline = false;
         let allConsumedItems = []; 
         let allWeightItems = [];
@@ -443,7 +451,7 @@
             requeijao: `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 8h12l-1 12H7L6 8zM9 4h6v4H9z"/></svg>`
         };
 
-        // LISTA ORGANIZADA EXATAMENTE COMO SOLICITADO
+        // LISTA EXATA DE 10 PROTEÍNAS, 10 CARBOIDRATOS, 10 FRUTAS, PÃES, MANTEIGA E REQUEIJÃO
         const predefinedFoods = [
             // --- 10 PROTEÍNAS ---
             { name: 'Peito de Frango', cals: 165, type: 'weight', category: 'protein', iconKey: 'chicken' },
@@ -509,19 +517,11 @@
                 auth = getAuth(app);
 
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    userId = auth.currentUser.uid;
+                    await signInAnonymously(auth);
                 } catch (authError) {
-                    userId = "user_" + Math.random().toString(36).substr(2, 9);
+                    console.log("Modo de autenticação fallback ativo");
                 }
 
-                const testRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'conexao');
-                await setDoc(testRef, { lastLogin: Date.now() }, { merge: true });
-                
                 isOnline = true;
                 updateOnlineStatus(true);
                 
@@ -531,6 +531,7 @@
             } catch (error) {
                 isOnline = false;
                 updateOnlineStatus(false);
+                console.error("Erro Firebase:", error);
             }
         }
 
@@ -550,9 +551,9 @@
         function getActivityRef() { return collection(db, 'artifacts', appId, 'users', userId, 'activities'); }
 
         function setupSnapshots() {
-            if (!isOnline || !userId) return;
+            if (!db) return;
             
-            // Ouvinte em tempo real para os Alimentos Consumidos
+            // ESCUTA ALIMENTOS EM TEMPO REAL
             onSnapshot(query(getFoodRef()), (snapshot) => {
                 allConsumedItems = [];
                 snapshot.forEach((doc) => {
@@ -561,9 +562,9 @@
                 allConsumedItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderTodayList();
                 renderCalendar();
-            }, (err) => console.error("Erro ao sincronizar alimentos:", err));
+            }, (err) => console.error("Erro snapshot alimentos:", err));
 
-            // Ouvinte em tempo real para Pesos
+            // ESCUTA PESOS EM TEMPO REAL
             onSnapshot(query(getWeightRef()), (snapshot) => {
                 allWeightItems = [];
                 snapshot.forEach((doc) => {
@@ -571,9 +572,9 @@
                 });
                 allWeightItems.sort((a, b) => new Date(b.date) - new Date(a.date));
                 renderWeightList();
-            }, (err) => console.error("Erro ao sincronizar pesos:", err));
+            }, (err) => console.error("Erro snapshot pesos:", err));
 
-            // Ouvinte em tempo real para Atividades
+            // ESCUTA ATIVIDADES EM TEMPO REAL
             onSnapshot(query(getActivityRef()), (snapshot) => {
                 allActivityItems = [];
                 snapshot.forEach((doc) => {
@@ -582,11 +583,11 @@
                 allActivityItems.sort((a, b) => b.timestamp - a.timestamp);
                 renderActivityList();
                 renderTodayList();
-            }, (err) => console.error("Erro ao sincronizar atividades:", err));
+            }, (err) => console.error("Erro snapshot atividades:", err));
         }
 
         async function loadGoalFromDB() {
-            if (!isOnline || !userId) return;
+            if (!db) return;
             try {
                 const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
                 const docSnap = await getDoc(docRef);
@@ -602,7 +603,7 @@
             dailyGoal = newGoal;
             document.getElementById('goal-display').innerText = dailyGoal;
             renderTodayList(); 
-            if (!isOnline || !userId) return;
+            if (!db) return;
             try {
                 const docRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'profile');
                 await setDoc(docRef, { dailyGoal: newGoal }, { merge: true });
@@ -611,18 +612,10 @@
 
         async function addFoodToDB(name, calories) {
             const newItem = { name, calories: Number(calories), date: getFormattedDate(), timestamp: Date.now() };
-            if (!isOnline || !userId) {
-                allConsumedItems.unshift({ id: 'temp-' + Date.now(), ...newItem });
-                renderTodayList(); return;
-            }
             try { await addDoc(getFoodRef(), newItem); } catch (e) { console.error(e); }
         }
 
         async function deleteFoodFromDB(docId) {
-            if (!isOnline || !userId) {
-                allConsumedItems = allConsumedItems.filter(item => item.id !== docId);
-                renderTodayList(); return;
-            }
             try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'foods', docId)); } catch (e) { console.error(e); }
         }
 
@@ -630,35 +623,19 @@
             const wNum = parseFloat(weight);
             if (isNaN(wNum) || wNum <= 0) return;
             const record = { weight: wNum, date: dateStr, timestamp: Date.now() };
-            if (!isOnline || !userId) {
-                allWeightItems.unshift({ id: 'temp-' + Date.now(), ...record });
-                renderWeightList(); return;
-            }
             try { await addDoc(getWeightRef(), record); } catch (e) { console.error(e); }
         }
 
         async function deleteWeightFromDB(docId) {
-            if (!isOnline || !userId) {
-                allWeightItems = allWeightItems.filter(i => i.id !== docId);
-                renderWeightList(); return;
-            }
             try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'weights', docId)); } catch (e) { console.error(e); }
         }
 
         async function addActivityToDB(name, duration, distance, calories) {
             const record = { name, duration: Number(duration), distance: Number(distance) || 0, calories: Math.round(calories), date: getFormattedDate(), timestamp: Date.now() };
-            if (!isOnline || !userId) {
-                allActivityItems.unshift({ id: 'temp-' + Date.now(), ...record });
-                renderActivityList(); renderTodayList(); return;
-            }
             try { await addDoc(getActivityRef(), record); } catch (e) { console.error(e); }
         }
 
         async function deleteActivityFromDB(docId) {
-            if (!isOnline || !userId) {
-                allActivityItems = allActivityItems.filter(i => i.id !== docId);
-                renderActivityList(); renderTodayList(); return;
-            }
             try { await deleteDoc(doc(db, 'artifacts', appId, 'users', userId, 'activities', docId)); } catch (e) { console.error(e); }
         }
 
